@@ -27,6 +27,22 @@ router.get('/me', auth, async (req, res) => {
   }
 });
 
+// @route     GET api/profiles
+// @desc      Get all profiles
+// @access    Public
+router.get('/', async (req, res) => {
+  try {
+    const profiles = await Profile.find({}, {
+      savedActivities: 0
+    }).populate('user', '-password');
+
+    res.json(profiles);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
 // @route     POST api/profiles
 // @desc      Create profile for user
 // @access    Private
