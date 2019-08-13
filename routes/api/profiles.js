@@ -12,7 +12,7 @@ router.get('/me', auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({
       user: req.user.id
-    }).populate('user');
+    }).populate('user', '-password');
 
     if (!profile) {
       return res.status(400).json({
@@ -24,6 +24,24 @@ router.get('/me', auth, async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
+  }
+});
+
+// @route     POST api/profiles
+// @desc      Create profile for user
+// @access    Private
+router.post('/', auth, async (req, res) => {
+  try {
+    const newProfile = new Profile({
+      user: req.user.id
+    });
+
+    const profile = await newProfile.save();
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
   }
 });
 
