@@ -61,4 +61,31 @@ router.post('/', auth, async (req, res) => {
   }
 });
 
+// @route     GET api/profiles/:id
+// @desc      Get profile by id
+// @access    Public
+router.get('/:id', async (req, res) => {
+  try {
+    const profile = await Profile.find({
+      _id: req.params.id
+    }, {
+      savedActivities: 0
+    });
+
+    if (!profile) return res.status(404).json({
+      msg: 'Profile not found'
+    });
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+
+    if (err.kind === 'ObjectId') return res.status(404).json({
+      msg: 'Profile not found'
+    });
+
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;
