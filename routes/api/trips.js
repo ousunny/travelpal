@@ -90,4 +90,34 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
+// @route     DELETE api/trips/:id
+// @desc      Delete a trip
+// @access    Private
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const trip = await Trip.findById(req.params.id);
+
+    if (!trip) return res.status(404).json({
+      msg: 'Trip not found'
+    });
+
+    if (trip.user.toString() !== req.user.id) return res.status(401).json({
+      msg: 'Not authorized'
+    });
+
+    await trip.remove();
+
+    res.json({
+      msg: 'Trip removed'
+    });
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') return res.status(404).json({
+      msg: 'Trip not found'
+    });
+
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;
