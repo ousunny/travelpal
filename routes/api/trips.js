@@ -8,6 +8,7 @@ const {
 const auth = require('../../middleware/auth');
 
 const Trip = require('../../models/Trip');
+const Profile = require('../../models/Profile');
 
 // @route     GET api/trips
 // @desc      Get all trips
@@ -60,6 +61,17 @@ router.post('/', [
 
     const trip = await newTrip.save();
 
+    const profile = await Profile.findOne({
+      user: req.user.id
+    });
+
+    if (!profile) return res.status(404).json({
+      msg: 'Profile not found'
+    });
+
+    profile.trips.push(trip);
+    await profile.save();
+
     res.json(trip);
   } catch (err) {
     console.error(err.message);
@@ -106,6 +118,14 @@ router.delete('/:id', auth, async (req, res) => {
     });
 
     await trip.remove();
+
+    await Profile.update({
+      user: req.user.id
+    }, {
+      $pullAll: {
+        trips: [trip._id]
+      }
+    });
 
     res.json({
       msg: 'Trip removed'
