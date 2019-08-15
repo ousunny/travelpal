@@ -110,6 +110,88 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
+// @route     PUT api/trips/:id/members/add
+// @desc      Add a member to a trip
+// @access    Private
+router.put('/:id/members/add', auth, async (req, res) => {
+  try {
+    const trip = await Trip.findById(req.params.id);
+
+    if (trip.user.toString() !== req.user.id)
+      return res.status(401).json({
+        msg: 'Not authorized'
+      });
+
+    let isMember = trip.members.some((member) => {
+      return member.equals(req.body.member);
+    });
+
+    if (isMember) return res.status(409).json({
+      msg: 'Member already exists'
+    });
+
+    trip.members.push(req.body.member);
+    await trip.save();
+
+    await Profile.updateOne({
+      user: req.body.member
+    }, {
+      $push: {
+        trips: req.params.id
+      }
+    });
+
+    res.json(trip);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+// @route     PUT api/trips/:id/members/remove
+// @desc      Remove a member from a trip
+// @access    Private
+router.put('/:id/members/remove', auth, async (req, res) => {
+  try {
+    const trip = await Trip.findById(req.params.id);
+
+    if (trip.user.toString() !== req.user.id)
+      return res.status(401).json({
+        msg: 'Not authorized'
+      });
+
+    let isMember = trip.members.some((member) => {
+      return member.equals(req.body.member);
+    });
+
+    if (!isMember) return res.status(404).json({
+      msg: 'Member not found'
+    });
+
+    await Trip.updateOne({
+      _id: req.params.id
+    }, {
+      $pull: {
+        members: req.body.member
+      }
+    });
+
+    await Profile.updateOne({
+      user: req.body.member
+    }, {
+      $pull: {
+        trips: req.params.id
+      }
+    });
+
+    res.json(trip);
+  } catch (err) {
+    console.error(err.message);
+
+    res.status(500).send('Server error');
+  }
+});
+
 // @route     DELETE api/trips/:id
 // @desc      Delete a trip
 // @access    Private
@@ -127,7 +209,7 @@ router.delete('/:id', auth, async (req, res) => {
 
     await trip.remove();
 
-    await Profile.update({
+    await Profile.updateOne({
       user: req.user.id
     }, {
       $pullAll: {
