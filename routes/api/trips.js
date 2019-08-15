@@ -91,6 +91,14 @@ router.get('/:id', auth, async (req, res) => {
       msg: 'Trip not found'
     });
 
+    let isMember = trip.members.some((member) => {
+      return member.equals(req.user.id);
+    });
+
+    if (!isMember) return res.status(401).json({
+      msg: 'Not authorized'
+    });
+
     res.json(trip);
   } catch (err) {
     console.error(err.message);
