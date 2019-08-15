@@ -68,4 +68,26 @@ router.post('/', [
   }
 });
 
+// @route     GET api/trips/:id
+// @desc      Get a trip
+// @access    Private
+router.get('/:id', auth, async (req, res) => {
+  try {
+    const trip = await Trip.findById(req.params.id);
+
+    if (!trip) return res.status(404).json({
+      msg: 'Trip not found'
+    });
+
+    res.json(trip);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') return res.status(404).json({
+      msg: 'Trip not found'
+    });
+
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;
