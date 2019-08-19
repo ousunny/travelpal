@@ -110,84 +110,70 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
-// @route     PUT api/trips/:id/members/add
-// @desc      Add a member to a trip
+// @route     PATCH api/trips/:id/members
+// @desc      Add or remove a member in a trip
 // @access    Private
-router.put('/:id/members/add', auth, async (req, res) => {
+router.patch('/:id/members', auth, async (req, res) => {
   try {
     const trip = await Trip.findById(req.params.id);
 
-    if (trip.user.toString() !== req.user.id)
-      return res.status(401).json({
-        msg: 'Not authorized'
-      });
+    if (trip.user.toString() !== req.user.id) return res.status(401).json({
+      msg: 'Not authorized'
+    });
 
     let isMember = trip.members.some((member) => {
       return member.equals(req.body.member);
     });
 
-    if (isMember) return res.status(409).json({
-      msg: 'Member already exists'
-    });
+    switch (req.body.op) {
+      case 'add':
+        if (isMember) return res.status(409).json({
+          msg: 'Member already exists'
+        });
 
-    trip.members.push(req.body.member);
-    await trip.save();
+        trip.members.push(req.body.member);
+        await trip.save();
 
-    await Profile.updateOne({
-      user: req.body.member
-    }, {
-      $push: {
-        trips: req.params.id
-      }
-    });
+        await Profile.updateOne({
+          user: req.body.member
+        }, {
+          $push: {
+            trips: req.params.id
+          }
+        });
 
-    res.json(trip);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
-  }
-});
+        break;
+      case 'remove':
+        if (!isMember) return res.status(404).json({
+          msg: 'Member not found'
+        });
 
-// @route     PUT api/trips/:id/members/remove
-// @desc      Remove a member from a trip
-// @access    Private
-router.put('/:id/members/remove', auth, async (req, res) => {
-  try {
-    const trip = await Trip.findById(req.params.id);
+        await Trip.updateOne({
+          _id: req.params.id
+        }, {
+          $pull: {
+            members: req.body.member
+          }
+        });
 
-    if (trip.user.toString() !== req.user.id)
-      return res.status(401).json({
-        msg: 'Not authorized'
-      });
+        await Profile.updateOne({
+          user: req.body.member
+        }, {
+          $pull: {
+            trips: req.params.id
+          }
+        });
 
-    let isMember = trip.members.some((member) => {
-      return member.equals(req.body.member);
-    });
-
-    if (!isMember) return res.status(404).json({
-      msg: 'Member not found'
-    });
-
-    await Trip.updateOne({
-      _id: req.params.id
-    }, {
-      $pull: {
-        members: req.body.member
-      }
-    });
-
-    await Profile.updateOne({
-      user: req.body.member
-    }, {
-      $pull: {
-        trips: req.params.id
-      }
-    });
+        break;
+      default:
+        return res.status(400).json({
+          msg: 'Invalid action'
+        });
+    }
 
     res.json(trip);
   } catch (err) {
     console.error(err.message);
-
     res.status(500).send('Server error');
   }
 });
