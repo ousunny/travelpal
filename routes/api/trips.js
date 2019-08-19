@@ -40,13 +40,13 @@ router.post('/', [
   });
 
   try {
-    ({
+    const {
       destination,
       date,
       title,
       description,
       information
-    } = req.body);
+    } = req.body;
 
     const newTrip = new Trip({
       user: req.user.id,
@@ -131,9 +131,11 @@ router.patch('/:id/members', auth, async (req, res) => {
           msg: 'Member already exists'
         });
 
+        // Add member to trip
         trip.members.push(req.body.member);
         await trip.save();
 
+        // Update profile of added user to include trip
         await Profile.updateOne({
           user: req.body.member
         }, {
@@ -148,6 +150,7 @@ router.patch('/:id/members', auth, async (req, res) => {
           msg: 'Member not found'
         });
 
+        // Remove member from trip
         await Trip.updateOne({
           _id: req.params.id
         }, {
@@ -156,6 +159,7 @@ router.patch('/:id/members', auth, async (req, res) => {
           }
         });
 
+        // Remove trip from removed user's profile
         await Profile.updateOne({
           user: req.body.member
         }, {
@@ -195,6 +199,7 @@ router.delete('/:id', auth, async (req, res) => {
 
     await trip.remove();
 
+    // Remove trip from user's profile
     await Profile.updateOne({
       user: req.user.id
     }, {
