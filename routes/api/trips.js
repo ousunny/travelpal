@@ -110,6 +110,29 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
+// @route     GET api/trips/:id/members
+// @desc      Get list of members in trip
+// @access    Private
+router.get('/:id/members', auth, async (req, res) => {
+  try {
+    const trip = await Trip.findOne({
+      _id: req.params.id
+    }, {
+      user: 0,
+      destination: 0,
+      date: 0,
+      title: 0,
+      description: 0,
+      information: 0
+    }).populate('members', '-password');
+
+    res.json(trip);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
 // @route     PATCH api/trips/:id/members
 // @desc      Add or remove a member in a trip
 // @access    Private
