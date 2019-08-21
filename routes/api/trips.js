@@ -126,9 +126,24 @@ router.get('/:id/members', auth, async (req, res) => {
       information: 0
     }).populate('members', '-password');
 
+    if (!trip) return res.status(404).json({
+      msg: 'Trip not found'
+    });
+
+    let isMember = trip.members.some((member) => {
+      return member.equals(req.user.id);
+    });
+
+    if (!isMember) return res.status(401).json({
+      msg: 'Not authorized'
+    });
+
     res.json(trip);
   } catch (err) {
     console.error(err.message);
+    if (err.kind === 'ObjectId') return res.status(404).json({
+      msg: 'Trip not found'
+    });
     res.status(500).send('Server error');
   }
 });
@@ -201,6 +216,9 @@ router.patch('/:id/members', auth, async (req, res) => {
     res.json(trip);
   } catch (err) {
     console.error(err.message);
+    if (err.kind === 'ObjectId') return res.status(404).json({
+      msg: 'Trip not found'
+    });
     res.status(500).send('Server error');
   }
 });
@@ -239,7 +257,6 @@ router.delete('/:id', auth, async (req, res) => {
     if (err.kind === 'ObjectId') return res.status(404).json({
       msg: 'Trip not found'
     });
-
     res.status(500).send('Server error');
   }
 });
@@ -278,6 +295,9 @@ router.get('/:id/activities', auth, async (req, res) => {
     res.json(activities);
   } catch (err) {
     console.error(err.message);
+    if (err.kind === 'ObjectId') return res.status(404).json({
+      msg: 'Trip not found'
+    });
     res.status(500).send('Server error');
   }
 });
