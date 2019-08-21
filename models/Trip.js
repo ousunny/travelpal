@@ -31,7 +31,16 @@ const TripSchema = new mongoose.Schema({
   },
   information: {
     type: String
-  }
+  },
+  activities: [{
+    date: {
+      type: Date
+    },
+    dailyActivities: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'activity'
+    }]
+  }]
 });
 
 module.exports = Trip = mongoose.model('trip', TripSchema);
