@@ -244,4 +244,42 @@ router.delete('/:id', auth, async (req, res) => {
   }
 });
 
+// @route     GET api/trips/:id/activities
+// @desc      Get all activities in a trip
+// @access    Private
+router.get('/:id/activities', auth, async (req, res) => {
+  try {
+    const trip = await Trip.findById(req.params.id);
+
+    if (!trip) return res.status(404).json({
+      msg: 'Trip not found'
+    });
+
+    let isMember = trip.members.some((member) => {
+      return member.equals(req.user.id);
+    });
+
+    if (!isMember) return res.status(401).json({
+      msg: 'Not authorized'
+    });
+
+    const activities = await Trip.findOne({
+      _id: req.params.id
+    }, {
+      user: 0,
+      members: 0,
+      destination: 0,
+      date: 0,
+      title: 0,
+      description: 0,
+      information: 0
+    }).populate('activities');
+
+    res.json(activities);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;
