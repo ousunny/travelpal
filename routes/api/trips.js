@@ -9,6 +9,7 @@ const auth = require('../../middleware/auth');
 
 const Trip = require('../../models/Trip');
 const Profile = require('../../models/Profile');
+const Activity = require('../../models/Activity');
 
 // @route     GET api/trips
 // @desc      Get all trips
@@ -293,6 +294,67 @@ router.get('/:id/activities', auth, async (req, res) => {
     }).populate('activities');
 
     res.json(activities);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') return res.status(404).json({
+      msg: 'Trip not found'
+    });
+    res.status(500).send('Server error');
+  }
+});
+
+// @route     POST api/trips/:id/activities
+// @desc      Create activity for trip
+// @access    Private
+router.post('/:id/activities', [
+  auth,
+  [
+    check('title', 'Title required').not().isEmpty()
+  ]
+], async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) return res.status(400).json({
+      errors: errors.array()
+    });
+
+    const trip = await Trip.findById(req.params.id);
+
+    if (!trip) return res.status(404).json({
+      msg: 'Trip not found'
+    });
+
+    let isMember = trip.members.some((member) => {
+      return member.equals(req.user.id)
+    });
+
+    if (!isMember) return res.status(401).json({
+      msg: 'Not authorized'
+    });
+
+    const user = await User.findById(req.user.id);
+
+    const {
+      firstName,
+      lastName
+    } = user;
+
+    const {
+      title,
+      description
+    } = req.body;
+
+    const newActivity = new Activity({
+      user: req.user.id,
+      firstName,
+      lastName,
+      title,
+      description
+    });
+
+    const activity = await newActivity.save();
+
+    res.json(activity);
   } catch (err) {
     console.error(err.message);
     if (err.kind === 'ObjectId') return res.status(404).json({
