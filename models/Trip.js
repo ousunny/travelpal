@@ -15,8 +15,7 @@ const TripSchema = new mongoose.Schema({
   },
   date: {
     start: {
-      type: Date,
-      default: Date.now()
+      type: Date
     },
     end: {
       type: Date
