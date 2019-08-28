@@ -4,6 +4,7 @@ const {
   check,
   validationResult
 } = require('express-validator');
+const moment = require('moment');
 
 const auth = require('../../middleware/auth');
 
@@ -49,13 +50,27 @@ router.post('/', [
       information
     } = req.body;
 
+    date.start = moment(date.start, 'YYYY-MM-DD');
+    date.end = moment(date.end, 'YYYY-MM-DD');
+
+    const dates = [];
+    const currentDate = date.start.clone();
+
+    while (currentDate.isSameOrBefore(date.end)) {
+      dates.push({
+        date: currentDate.clone()
+      });
+      currentDate.add(1, 'days');
+    }
+
     const newTrip = new Trip({
       user: req.user.id,
       destination,
       date,
       title,
       description,
-      information
+      information,
+      activities: dates
     });
 
     newTrip.members.push(req.user.id);
