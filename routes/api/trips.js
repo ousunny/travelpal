@@ -58,7 +58,7 @@ router.post('/', [
 
     while (currentDate.isSameOrBefore(date.end)) {
       dates.push({
-        date: currentDate.clone()
+        date: currentDate.toDate()
       });
       currentDate.add(1, 'days');
     }
@@ -359,15 +359,28 @@ router.post('/:id/activities', [
       description
     } = req.body;
 
-    const newActivity = new Activity({
+    let {
+      date
+    } = req.body;
+
+    date = moment(date, 'YYYY-MM-DD');
+
+    const activity = new Activity({
       user: req.user.id,
       firstName,
       lastName,
       title,
+      date,
       description
     });
 
-    const activity = await newActivity.save();
+    let foundActivity = trip.activities.find(activity => {
+      return date.isSame(activity.date);
+    });
+
+    foundActivity.dailyActivities.push(activity);
+
+    await trip.save();
 
     res.json(activity);
   } catch (err) {
