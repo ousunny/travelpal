@@ -31,13 +31,39 @@ const TripSchema = new mongoose.Schema({
   information: {
     type: String
   },
-  activities: [{
+  itinerary: [{
     date: {
       type: Date
     },
-    dailyActivities: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'activity'
+    activities: [{
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+      },
+      firstName: {
+        type: String
+      },
+      lastName: {
+        type: String
+      },
+      title: {
+        type: String,
+        required: true
+      },
+      date: {
+        type: Date
+      },
+      description: {
+        type: String
+      },
+      interested: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+      }],
+      uninterested: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+      }]
     }]
   }]
 });
