@@ -394,27 +394,4 @@ router.post('/:id/activities', [
   }
 });
 
-// @route     DELETE api/trips/:tripId/activities/:activityId
-// @desc      Delete activity from trip
-// @access    Private
-router.delete('/:tripId/activities/:activityId', auth, async (req, res) => {
-  try {
-    const trip = await Trip.findById(req.params.tripId);
-
-    if (!trip) return res.status(404).json({
-      msg: 'Trip not found'
-    });
-
-    if (trip.user.toString() !== req.user.id) return res.status(401).json({
-      msg: 'Not authorized'
-    });
-  } catch (err) {
-    console.error(err.message);
-    if (err.kind === 'ObjectId') return res.status(404).json({
-      msg: 'Trip not found'
-    });
-    res.status(500).send('Server error');
-  }
-});
-
 module.exports = router;
