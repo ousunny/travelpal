@@ -70,7 +70,7 @@ router.post('/', [
       title,
       description,
       information,
-      activities: dates
+      itinerary: dates
     });
 
     newTrip.members.push(req.user.id);
@@ -296,7 +296,7 @@ router.get('/:id/activities', auth, async (req, res) => {
       msg: 'Not authorized'
     });
 
-    const activities = await Trip.findOne({
+    const itinerary = await Trip.findOne({
       _id: req.params.id
     }, {
       user: 0,
@@ -306,9 +306,9 @@ router.get('/:id/activities', auth, async (req, res) => {
       title: 0,
       description: 0,
       information: 0
-    }).populate('activities');
+    });
 
-    res.json(activities);
+    res.json(itinerary);
   } catch (err) {
     console.error(err.message);
     if (err.kind === 'ObjectId') return res.status(404).json({
@@ -333,7 +333,7 @@ router.post('/:id/activities', [
       errors: errors.array()
     });
 
-    const trip = await Trip.findById(req.params.id);
+    let trip = await Trip.findById(req.params.id);
 
     if (!trip) return res.status(404).json({
       msg: 'Trip not found'
@@ -356,7 +356,8 @@ router.post('/:id/activities', [
 
     const {
       title,
-      description
+      description,
+      information
     } = req.body;
 
     let {
@@ -365,24 +366,25 @@ router.post('/:id/activities', [
 
     date = moment(date, 'YYYY-MM-DD');
 
-    const activity = new Activity({
+    const activity = {
       user: req.user.id,
       firstName,
       lastName,
       title,
       date,
-      description
-    });
+      description,
+      information
+    }
 
-    let foundActivity = trip.activities.find(activity => {
+    let foundActivity = trip.itinerary.find(activity => {
       return date.isSame(activity.date);
     });
 
-    foundActivity.dailyActivities.push(activity);
+    foundActivity.activities.push(activity);
 
-    await trip.save();
+    trip = await trip.save();
 
-    res.json(activity);
+    res.json(trip);
   } catch (err) {
     console.error(err.message);
     if (err.kind === 'ObjectId') return res.status(404).json({
@@ -406,13 +408,6 @@ router.delete('/:tripId/activities/:activityId', auth, async (req, res) => {
     if (trip.user.toString() !== req.user.id) return res.status(401).json({
       msg: 'Not authorized'
     });
-
-    const activity = await Activity.findById(req.params.activityId);
-
-    if (!activity) return res.status(404).json({
-      msg: 'Activity not found'
-    });
-
   } catch (err) {
     console.error(err.message);
     if (err.kind === 'ObjectId') return res.status(404).json({
