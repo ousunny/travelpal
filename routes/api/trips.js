@@ -394,4 +394,47 @@ router.post('/:id/activities', [
   }
 });
 
+// @route     PATCH api/trips/:tripId/activities/:activityId
+// @desc      Delete or edit an activity from a trip
+// @access    Private
+router.patch('/:tripId/activities/:activityId', auth, async (req, res) => {
+  try {
+    let trip = await Trip.findById(req.params.tripId);
+
+    if (trip.user.toString() !== req.user.id) return res.status(401).json({
+      msg: 'Not authorized'
+    });
+
+    const {
+      date
+    } = req.body;
+
+    switch (req.body.op) {
+      case 'remove':
+        trip.itinerary.map(day => {
+          if (moment(day.date, 'YYYY-MM-DD').isSame(date)) {
+            day.activities = day.activities.filter(activity => {
+              return activity._id.toString() !== req.params.activityId;
+            });
+          }
+        });
+        break;
+      default:
+        return res.status(400).json({
+          msg: 'Invalid action'
+        });
+    }
+
+    await trip.save();
+
+    res.json(trip);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') return res.status(404).json({
+      msg: 'Trip not found'
+    });
+    res.status(500).send('Server error');
+  }
+});
+
 module.exports = router;
