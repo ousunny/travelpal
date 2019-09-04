@@ -406,7 +406,9 @@ router.patch('/:tripId/activities/:activityId', auth, async (req, res) => {
     });
 
     const {
-      date
+      title,
+      date,
+      description
     } = req.body;
 
     switch (req.body.op) {
@@ -415,6 +417,18 @@ router.patch('/:tripId/activities/:activityId', auth, async (req, res) => {
           if (moment(day.date, 'YYYY-MM-DD').isSame(date)) {
             day.activities = day.activities.filter(activity => {
               return activity._id.toString() !== req.params.activityId;
+            });
+          }
+        });
+        break;
+      case 'edit':
+        trip.itinerary.map(day => {
+          if (moment(day.date, 'YYYY-MM-DD').isSame(date)) {
+            day.activities.map(activity => {
+              if (activity._id.toString() === req.params.activityId) {
+                if (title) activity.title = title;
+                if (description) activity.description = description;
+              }
             });
           }
         });

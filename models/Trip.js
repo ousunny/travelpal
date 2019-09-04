@@ -48,13 +48,15 @@ const TripSchema = new mongoose.Schema({
       },
       title: {
         type: String,
+        default: '',
         required: true
       },
       date: {
         type: Date
       },
       description: {
-        type: String
+        type: String,
+        default: ''
       },
       interested: [{
         type: mongoose.Schema.Types.ObjectId,
