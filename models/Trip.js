@@ -63,10 +63,6 @@ const TripSchema = new mongoose.Schema({
       interested: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
-      }],
-      uninterested: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
       }]
     }]
   }]

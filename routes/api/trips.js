@@ -459,8 +459,7 @@ router.patch('/:tripId/activities/:activityId', auth, async (req, res) => {
       title,
       date,
       description,
-      interested,
-      uninterested
+      interested
     } = req.body;
 
     switch (req.body.op) {
