@@ -26,10 +26,12 @@ const TripSchema = new mongoose.Schema({
     required: true
   },
   description: {
-    type: String
+    type: String,
+    default: ''
   },
   information: {
-    type: String
+    type: String,
+    default: ''
   },
   itinerary: [{
     date: {

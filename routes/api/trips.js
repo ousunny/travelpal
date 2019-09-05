@@ -126,6 +126,56 @@ router.get('/:id', auth, async (req, res) => {
   }
 });
 
+// @route     PATCH api/trips/:id
+// @desc      Edit trip details
+// @access    Private
+router.patch('/:id', auth, async (req, res) => {
+  try {
+    const trip = await Trip.findById(req.params.id);
+
+    if (!trip) return res.status(404).json({
+      msg: 'Trip not found'
+    });
+
+    let isMember = trip.members.some((member) => {
+      return member.equals(req.user.id);
+    });
+
+    if (!isMember) return res.status(401).json({
+      msg: 'Not authorized'
+    });
+
+    const {
+      title,
+      description,
+      information
+    } = req.body;
+
+    switch (req.body.op) {
+      case 'edit':
+        if (title) trip.title = title;
+        if (description) trip.description = description;
+        if (information) trip.information = information;
+
+        await trip.save();
+        break;
+      default:
+        return res.status(400).json({
+          msg: 'Invalid action'
+        });
+    }
+
+    res.json(trip);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === 'ObjectId') return res.status(404).json({
+      msg: 'Trip not found'
+    });
+
+    res.status(500).send('Server error');
+  }
+});
+
 // @route     GET api/trips/:id/members
 // @desc      Get list of members in trip
 // @access    Private
