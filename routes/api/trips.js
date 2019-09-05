@@ -153,9 +153,9 @@ router.patch('/:id', auth, async (req, res) => {
 
     switch (req.body.op) {
       case 'edit':
-        if (title) trip.title = title;
-        if (description) trip.description = description;
-        if (information) trip.information = information;
+        title && (trip.title = title);
+        description && (trip.description = description);
+        information && (trip.information = information);
 
         await trip.save();
         break;
@@ -458,7 +458,9 @@ router.patch('/:tripId/activities/:activityId', auth, async (req, res) => {
     const {
       title,
       date,
-      description
+      description,
+      interested,
+      uninterested
     } = req.body;
 
     switch (req.body.op) {
@@ -476,8 +478,8 @@ router.patch('/:tripId/activities/:activityId', auth, async (req, res) => {
           if (moment(day.date, 'YYYY-MM-DD').isSame(date)) {
             day.activities.map(activity => {
               if (activity._id.toString() === req.params.activityId) {
-                if (title) activity.title = title;
-                if (description) activity.description = description;
+                title && (activity.title = title);
+                description && (activity.description = description);
               }
             });
           }
