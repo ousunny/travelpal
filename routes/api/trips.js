@@ -480,6 +480,18 @@ router.patch('/:tripId/activities/:activityId', auth, async (req, res) => {
               if (activity._id.toString() === req.params.activityId) {
                 title && (activity.title = title);
                 description && (activity.description = description);
+
+                if (interested) {
+                  let isFound = false;
+
+                  activity.interested = activity.interested.reduce((accumulator, user) => {
+                    user.toString() === interested ? isFound = true : accumulator.unshift(user);
+
+                    return accumulator;
+                  }, []);
+
+                  !isFound && activity.interested.unshift(interested);
+                }
               }
             });
           }
