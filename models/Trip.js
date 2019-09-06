@@ -5,10 +5,12 @@ const TripSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user'
   },
-  members: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
-  }],
+  members: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'user'
+    }
+  ],
   destination: {
     type: String,
     required: true
@@ -33,39 +35,45 @@ const TripSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
-  itinerary: [{
-    date: {
-      type: Date
-    },
-    activities: [{
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
-      },
-      firstName: {
-        type: String
-      },
-      lastName: {
-        type: String
-      },
-      title: {
-        type: String,
-        default: '',
-        required: true
-      },
+  itinerary: [
+    {
       date: {
         type: Date
       },
-      description: {
-        type: String,
-        default: ''
-      },
-      interested: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
-      }]
-    }]
-  }]
+      activities: [
+        {
+          user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user'
+          },
+          firstName: {
+            type: String
+          },
+          lastName: {
+            type: String
+          },
+          title: {
+            type: String,
+            default: '',
+            required: true
+          },
+          date: {
+            type: Date
+          },
+          description: {
+            type: String,
+            default: ''
+          },
+          interested: [
+            {
+              type: mongoose.Schema.Types.ObjectId,
+              ref: 'user'
+            }
+          ]
+        }
+      ]
+    }
+  ]
 });
 
 module.exports = Trip = mongoose.model('trip', TripSchema);

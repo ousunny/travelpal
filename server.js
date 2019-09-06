@@ -13,9 +13,11 @@ const tripsRoutes = require('./routes/api/trips');
 connectDB();
 
 // Middleware
-app.use(express.json({
-  extended: false
-}));
+app.use(
+  express.json({
+    extended: false
+  })
+);
 
 // Define routes
 app.use('/api/users', usersRoutes);

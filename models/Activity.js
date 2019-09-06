@@ -21,14 +21,18 @@ const ActivitySchema = new mongoose.Schema({
   description: {
     type: String
   },
-  interested: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
-  }],
-  uninterested: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'user'
-  }]
+  interested: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'user'
+    }
+  ],
+  uninterested: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'user'
+    }
+  ]
 });
 
 module.exports = Activity = mongoose.model('activity', ActivitySchema);

@@ -32,9 +32,12 @@ router.get('/me', auth, async (req, res) => {
 // @access    Public
 router.get('/', async (req, res) => {
   try {
-    const profiles = await Profile.find({}, {
-      savedActivities: 0
-    }).populate('user', '-password');
+    const profiles = await Profile.find(
+      {},
+      {
+        savedActivities: 0
+      }
+    ).populate('user', '-password');
 
     res.json(profiles);
   } catch (err) {
@@ -66,23 +69,28 @@ router.post('/', auth, async (req, res) => {
 // @access    Public
 router.get('/:id', async (req, res) => {
   try {
-    const profile = await Profile.find({
-      _id: req.params.id
-    }, {
-      savedActivities: 0
-    });
+    const profile = await Profile.find(
+      {
+        _id: req.params.id
+      },
+      {
+        savedActivities: 0
+      }
+    );
 
-    if (!profile) return res.status(404).json({
-      msg: 'Profile not found'
-    });
+    if (!profile)
+      return res.status(404).json({
+        msg: 'Profile not found'
+      });
 
     res.json(profile);
   } catch (err) {
     console.error(err.message);
 
-    if (err.kind === 'ObjectId') return res.status(404).json({
-      msg: 'Profile not found'
-    });
+    if (err.kind === 'ObjectId')
+      return res.status(404).json({
+        msg: 'Profile not found'
+      });
 
     res.status(500).send('Server error');
   }
