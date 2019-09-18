@@ -1,10 +1,8 @@
 import React from 'react';
 import './App.css';
 
-const App = () => (
-  <div className="App">
-    <h1> Travelpal </h1>
-  </div>
-);
+import BottomNavBar from './components/layout/BottomNavBar';
+
+const App = () => <BottomNavBar />;
 
 export default App;
