@@ -1,91 +1,116 @@
-import React, { Fragment } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { TextField, Button, Link } from '@material-ui/core';
+import { Grid, TextField, Button } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  containerHorizontal: {
-    display: 'flex'
-  },
-  actions: {
-    margin: '1.5rem auto'
-  },
-  spacing: {
-    margin: theme.spacing(1)
-  },
-  spacingLeft: {
-    marginLeft: theme.spacing(1)
+  root: {
+    maxWidth: '500px',
+    margin: '0 auto'
   }
 }));
 
 const CollisionLink = React.forwardRef((props, ref) => (
-  <RouterLink innerRef={ref} to="/login" {...props} />
+  <Link innerRef={ref} to="/login" {...props} />
 ));
 
 const Register = () => {
   const classes = useStyles();
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    username: '',
+    password: '',
+    password2: ''
+  });
+
+  const { firstName, lastName, username, password, password2 } = formData;
+
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = e => {
+    e.preventDefault();
+    if (password !== password2) {
+      console.log('Passwords do not match');
+    } else {
+      console.log(formData);
+    }
+  };
 
   return (
-    <Fragment>
+    <div className={classes.root}>
       <h1>Register</h1>
-      <form className={classes.container}>
-        <div className={classes.containerHorizontal}>
-          <TextField
-            required
-            id="firstName"
-            placeholder="First Name"
-            margin="normal"
-          />
-          <TextField
-            required
-            id="lastName"
-            placeholder="Last Name"
-            margin="normal"
-            className={classes.spacingLeft}
-          />
-        </div>
-        <TextField
-          required
-          id="username"
-          placeholder="username"
-          margin="normal"
-        />
-        <div className={classes.containerHorizontal}>
-          <TextField
-            required
-            id="password"
-            placeholder="password"
-            margin="normal"
-            type="password"
-          />
-          <TextField
-            required
-            id="password2"
-            placeholder="Confirm password"
-            margin="normal"
-            type="password"
-            className={classes.spacingLeft}
-          />
-        </div>
-        <div className={classes.actions}>
-          <Link component={CollisionLink} className={classes.spacing}>
-            Login
-          </Link>
-          <Button
-            variant="contained"
-            size="large"
-            color="primary"
-            className={classes.spacing}
-          >
-            Register
-          </Button>
-        </div>
+      <form onSubmit={e => onSubmit(e)}>
+        <Grid container justify="center" alignItems="center" spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              name="firstName"
+              placeholder="First Name"
+              value={firstName}
+              onChange={e => onChange(e)}
+              margin="normal"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              name="lastName"
+              placeholder="Last Name"
+              value={lastName}
+              onChange={e => onChange(e)}
+              margin="normal"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              required
+              name="username"
+              placeholder="username"
+              value={username}
+              onChange={e => onChange(e)}
+              margin="normal"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              name="password"
+              placeholder="password"
+              value={password}
+              onChange={e => onChange(e)}
+              margin="normal"
+              type="password"
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              required
+              name="password2"
+              placeholder="Confirm password"
+              value={password2}
+              onChange={e => onChange(e)}
+              margin="normal"
+              type="password"
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <Button component={CollisionLink}>Login</Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Button
+              variant="contained"
+              size="large"
+              color="primary"
+              type="submit"
+            >
+              Register
+            </Button>
+          </Grid>
+        </Grid>
       </form>
-    </Fragment>
+    </div>
   );
 };
 
