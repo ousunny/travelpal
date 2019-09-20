@@ -4,6 +4,7 @@ import { Container } from '@material-ui/core';
 
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import Alert from './components/layout/Alert';
 
 import { Provider } from 'react-redux';
 import store from './store';
@@ -15,6 +16,7 @@ const App = () => (
     <Router>
       <Fragment>
         <Container>
+          <Alert />
           <Switch>
             <Route exact path="/" component={Login} />
             <Route exact path="/login" component={Login} />
