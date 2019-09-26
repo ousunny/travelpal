@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { setAlert } from '../../actions/alert';
+import { register } from '../../actions/auth';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, TextField, Button } from '@material-ui/core';
@@ -19,7 +20,7 @@ const CollisionLink = React.forwardRef((props, ref) => (
   <Link innerRef={ref} to="/login" {...props} />
 ));
 
-const Register = ({ setAlert }) => {
+const Register = ({ setAlert, register }) => {
   const classes = useStyles();
   const [formData, setFormData] = useState({
     firstName: '',
@@ -39,7 +40,7 @@ const Register = ({ setAlert }) => {
     if (password !== password2) {
       setAlert('Passwords do not match', 'error');
     } else {
-      console.log(formData);
+      register({ firstName, lastName, username, password });
     }
   };
 
@@ -120,10 +121,11 @@ const Register = ({ setAlert }) => {
 };
 
 Register.propTypes = {
-  setAlert: PropTypes.func.isRequired
+  setAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired
 };
 
 export default connect(
   null,
-  { setAlert }
+  { setAlert, register }
 )(Register);
