@@ -101,6 +101,6 @@ export const login = ({ username, password }) => async dispatch => {
   }
 };
 
-export const logout = async dispatch => {
+export const logout = () => dispatch => {
   dispatch({ type: LOGOUT });
 };

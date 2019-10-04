@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { logout } from '../../actions/auth';
@@ -12,7 +13,9 @@ const Profile = ({ logout }) => {
       <h1>Profile</h1>
       <Grid container>
         <Grid item xs={12}>
-          <Button>Logout</Button>
+          <Button onClick={logout} to="/" component={Link}>
+            Logout
+          </Button>
         </Grid>
       </Grid>
     </Fragment>
