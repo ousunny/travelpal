@@ -11,6 +11,7 @@ import {
 } from './types';
 
 import { setAlert } from './alert';
+import { createProfile } from './profile';
 import setAuthToken from '../utils/setAuthToken';
 
 export const loadUser = () => async dispatch => {
@@ -56,6 +57,8 @@ export const register = ({
       type: REGISTER_SUCCESS,
       payload: res.data
     });
+
+    dispatch(createProfile());
 
     dispatch(loadUser());
   } catch (err) {
