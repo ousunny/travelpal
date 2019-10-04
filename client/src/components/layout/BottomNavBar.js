@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
 import {
@@ -7,7 +8,13 @@ import {
   PersonOutlineOutlined
 } from '@material-ui/icons';
 
-const useStyles = makeStyles(theme => ({}));
+const useStyles = makeStyles(theme => ({
+  root: {
+    position: 'fixed',
+    width: '100%',
+    bottom: '0'
+  }
+}));
 
 const BottomNavBar = () => {
   const classes = useStyles();
@@ -19,12 +26,28 @@ const BottomNavBar = () => {
 
   return (
     <Fragment>
-      <BottomNavigation value={value} onChange={handleChange}>
-        <BottomNavigationAction value="trips" icon={<CardTravelOutlined />} />
-        <BottomNavigationAction value="activities" icon={<ListAltOutlined />} />
+      <BottomNavigation
+        className={classes.root}
+        value={value}
+        onChange={handleChange}
+      >
+        <BottomNavigationAction
+          value="trips"
+          icon={<CardTravelOutlined />}
+          to="/trips"
+          component={Link}
+        />
+        <BottomNavigationAction
+          value="activities"
+          icon={<ListAltOutlined />}
+          to="/profile/activities"
+          component={Link}
+        />
         <BottomNavigationAction
           value="profile"
           icon={<PersonOutlineOutlined />}
+          to="/profile"
+          component={Link}
         />
       </BottomNavigation>
     </Fragment>

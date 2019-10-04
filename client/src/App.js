@@ -5,6 +5,7 @@ import { Container } from '@material-ui/core';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Alert from './components/layout/Alert';
+import BottomNavBar from './components/layout/BottomNavBar';
 
 import setAuthToken from './utils/setAuthToken';
 import { loadUser } from './actions/auth';
@@ -33,6 +34,7 @@ const App = () => {
               <Route exact path="/register" component={Register} />
             </Switch>
           </Container>
+          <BottomNavBar />
         </Fragment>
       </Router>
     </Provider>
