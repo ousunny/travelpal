@@ -7,10 +7,10 @@ import { logout } from '../../actions/auth';
 
 import { Grid, Button } from '@material-ui/core';
 
-const Profile = ({ logout }) => {
+const Account = ({ logout }) => {
   return (
     <Fragment>
-      <h1>Profile</h1>
+      <h1>Account</h1>
       <Grid container>
         <Grid item xs={12}>
           <Button onClick={logout} to="/" component={Link}>
@@ -22,11 +22,11 @@ const Profile = ({ logout }) => {
   );
 };
 
-Profile.propTypes = {
+Account.propTypes = {
   logout: PropTypes.func.isRequired
 };
 
 export default connect(
   null,
   { logout }
-)(Profile);
+)(Account);
