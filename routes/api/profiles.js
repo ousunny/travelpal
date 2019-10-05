@@ -71,7 +71,7 @@ router.get('/:id', async (req, res) => {
   try {
     const profile = await Profile.find(
       {
-        _id: req.params.id
+        user: req.params.id
       },
       {
         savedActivities: 0
@@ -90,6 +90,38 @@ router.get('/:id', async (req, res) => {
     if (err.kind === 'ObjectId')
       return res.status(404).json({
         msg: 'Profile not found'
+      });
+
+    res.status(500).send('Server error');
+  }
+});
+
+// @route     GET api/profiles/:id/trips
+// @desc      Get all trips for a specific profile
+// @access    Private
+router.get('/:id/trips', auth, async (req, res) => {
+  try {
+    const profile = await Profile.find(
+      {
+        user: req.params.id
+      },
+      {
+        savedActivities: 0
+      }
+    ).populate('trips');
+
+    if (!profile)
+      return res.status(404).json({
+        msg: 'Profile not found'
+      });
+
+    res.json(profile);
+  } catch (err) {
+    console.error(err.message);
+
+    if (err.kind === 'ObjectId')
+      return res.status(404).json({
+        msg: 'User not found'
       });
 
     res.status(500).send('Server error');
