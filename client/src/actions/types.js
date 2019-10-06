@@ -8,3 +8,4 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT = 'LOGOUT';
 export const PROFILE_CREATE = 'PROFILE_CREATE';
+export const PROFILE_GET_TRIPS = 'PROFILE_GET_TRIPS';

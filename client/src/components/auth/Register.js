@@ -20,7 +20,7 @@ const CollisionLink = React.forwardRef((props, ref) => (
   <Link innerRef={ref} to="/login" {...props} />
 ));
 
-const Register = ({ setAlert, register, isAuthenticated }) => {
+const Register = ({ setAlert, register, auth: { isAuthenticated, user } }) => {
   const classes = useStyles();
   const [formData, setFormData] = useState({
     firstName: '',
@@ -44,7 +44,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
     }
   };
 
-  if (isAuthenticated) return <Redirect to="/" />;
+  if (isAuthenticated) return <Redirect to={`/profiles/${user._id}/trips`} />;
 
   return (
     <div className={classes.root}>
@@ -125,11 +125,11 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
 Register.propTypes = {
   setAlert: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool
+  auth: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  auth: state.auth
 });
 
 export default connect(

@@ -7,7 +7,8 @@ import PrivateRoute from './PrivateRoute';
 import Alert from '../layout/Alert';
 import Login from '../auth/Login';
 import Register from '../auth/Register';
-import Profile from '../layout/Profile';
+import ProfileTrips from '../profile/ProfileTrips';
+import Account from '../layout/Account';
 
 const Routes = () => {
   return (
@@ -17,7 +18,12 @@ const Routes = () => {
         <Route exact path="/" component={Login} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
-        <PrivateRoute exact path="/profile" component={Profile} />
+        <PrivateRoute
+          exact
+          path="/profiles/:id/trips"
+          component={ProfileTrips}
+        />
+        <PrivateRoute exact path="/account" component={Account} />
       </Switch>
     </Container>
   );

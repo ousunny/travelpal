@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { PROFILE_CREATE } from './types';
+import { PROFILE_CREATE, PROFILE_GET_TRIPS } from './types';
 
 import { setAlert } from './alert';
 
@@ -27,4 +27,17 @@ export const createProfile = () => async dispatch => {
 
     errors && errors.map(error => dispatch(setAlert(error.msg, 'error')));
   }
+};
+
+export const getProfileById = userId => async dispatch => {};
+
+export const getProfileTrips = userId => async dispatch => {
+  try {
+    const res = await axios.get(`/api/profiles/${userId}/trips`);
+
+    dispatch({
+      type: PROFILE_GET_TRIPS,
+      payload: res.data.trips
+    });
+  } catch (err) {}
 };

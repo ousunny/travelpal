@@ -69,7 +69,7 @@ router.post('/', auth, async (req, res) => {
 // @access    Public
 router.get('/:id', async (req, res) => {
   try {
-    const profile = await Profile.find(
+    const profile = await Profile.findOne(
       {
         user: req.params.id
       },
@@ -101,7 +101,7 @@ router.get('/:id', async (req, res) => {
 // @access    Private
 router.get('/:id/trips', auth, async (req, res) => {
   try {
-    const profile = await Profile.find(
+    const profile = await Profile.findOne(
       {
         user: req.params.id
       },

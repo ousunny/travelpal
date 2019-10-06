@@ -34,7 +34,7 @@ const BottomNavBar = () => {
         <BottomNavigationAction
           value="trips"
           icon={<CardTravelOutlined />}
-          to="/trips"
+          to="/profile/trips"
           component={Link}
         />
         <BottomNavigationAction
@@ -46,7 +46,7 @@ const BottomNavBar = () => {
         <BottomNavigationAction
           value="profile"
           icon={<PersonOutlineOutlined />}
-          to="/profile"
+          to="/account"
           component={Link}
         />
       </BottomNavigation>
