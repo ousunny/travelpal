@@ -1,5 +1,8 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
 import { makeStyles } from '@material-ui/core';
 import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
 import {
@@ -16,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BottomNavBar = () => {
+const BottomNavBar = ({ auth: { user, isAuthenticated } }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState('trips');
 
@@ -26,32 +29,42 @@ const BottomNavBar = () => {
 
   return (
     <Fragment>
-      <BottomNavigation
-        className={classes.root}
-        value={value}
-        onChange={handleChange}
-      >
-        <BottomNavigationAction
-          value="trips"
-          icon={<CardTravelOutlined />}
-          to="/profile/trips"
-          component={Link}
-        />
-        <BottomNavigationAction
-          value="activities"
-          icon={<ListAltOutlined />}
-          to="/profile/activities"
-          component={Link}
-        />
-        <BottomNavigationAction
-          value="profile"
-          icon={<PersonOutlineOutlined />}
-          to="/account"
-          component={Link}
-        />
-      </BottomNavigation>
+      {isAuthenticated && (
+        <BottomNavigation
+          className={classes.root}
+          value={value}
+          onChange={handleChange}
+        >
+          <BottomNavigationAction
+            value="trips"
+            icon={<CardTravelOutlined />}
+            to={`/profiles/${user._id}/trips`}
+            component={Link}
+          />
+          <BottomNavigationAction
+            value="activities"
+            icon={<ListAltOutlined />}
+            to={`/profiles/${user._id}/activities`}
+            component={Link}
+          />
+          <BottomNavigationAction
+            value="profile"
+            icon={<PersonOutlineOutlined />}
+            to="/account"
+            component={Link}
+          />
+        </BottomNavigation>
+      )}
     </Fragment>
   );
 };
 
-export default BottomNavBar;
+BottomNavBar.propTypes = {
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(mapStateToProps)(BottomNavBar);
