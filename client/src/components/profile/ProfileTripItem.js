@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, CardContent, CardActionArea } from '@material-ui/core';
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardActionArea
+} from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -20,15 +25,19 @@ const ProfileTrip = ({
   return (
     <Card className={classes.card}>
       <CardActionArea to={`/trips/${_id}`} component={Link}>
+        <CardHeader
+          title={title}
+          subheader={
+            <Fragment>
+              <Moment format="YYYY-MM-DD">{date.start}</Moment> -{' '}
+              <Moment format="YYYY-MM-DD">{date.end}</Moment>
+              <div>{destination}</div>
+              <div>{members.length} members currently going</div>
+            </Fragment>
+          }
+        />
         <CardContent>
-          <h3>{title}</h3>
-          <p>
-            <Moment format="YYYY-MM-DD">{date.start}</Moment> -{' '}
-            <Moment format="YYYY-MM-DD">{date.end}</Moment>
-          </p>
-          <p>Destination: {destination}</p>
           <p>{description}</p>
-          <p>{members.length} members currently going</p>
         </CardContent>
       </CardActionArea>
     </Card>
