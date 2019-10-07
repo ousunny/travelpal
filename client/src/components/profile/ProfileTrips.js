@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import ProfileTrip from './ProfileTrip';
+import ProfileTripItem from './ProfileTripItem';
 
 import { getProfileTrips } from '../../actions/profile';
 
@@ -38,7 +38,7 @@ const ProfileTrips = ({
         <Fragment>
           <h2>Trips</h2>
           {trips.length > 0 ? (
-            trips.map(trip => <ProfileTrip key={trip._id} trip={trip} />)
+            trips.map(trip => <ProfileTripItem key={trip._id} trip={trip} />)
           ) : (
             <h4>No trips found</h4>
           )}
