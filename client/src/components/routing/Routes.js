@@ -8,6 +8,7 @@ import Alert from '../layout/Alert';
 import Login from '../auth/Login';
 import Register from '../auth/Register';
 import ProfileTrips from '../profile/ProfileTrips';
+import Trip from '../trip/Trip';
 import Account from '../layout/Account';
 
 const Routes = () => {
@@ -23,6 +24,7 @@ const Routes = () => {
           path="/profiles/:id/trips"
           component={ProfileTrips}
         />
+        <PrivateRoute exact path="/trips/:tripId" component={Trip} />
         <PrivateRoute exact path="/account" component={Account} />
         <Route component={Login} />
       </Switch>

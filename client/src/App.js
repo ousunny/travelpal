@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import BottomNavBar from './components/layout/BottomNavBar';
 import Routes from './components/routing/Routes';
+import PrivateRoute from './components/routing/PrivateRoute';
 import Login from './components/auth/Login';
 
 import setAuthToken from './utils/setAuthToken';
@@ -28,7 +29,7 @@ const App = () => {
             <Route exact path="/" component={Login} />
             <Route component={Routes} />
           </Switch>
-          <BottomNavBar />
+          <PrivateRoute component={BottomNavBar} />
         </Fragment>
       </Router>
     </Provider>

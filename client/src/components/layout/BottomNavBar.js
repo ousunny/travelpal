@@ -29,7 +29,7 @@ const BottomNavBar = ({ auth, auth: { user, isAuthenticated, loading } }) => {
 
   return (
     <Fragment>
-      {isAuthenticated && !loading && user && (
+      {user && (
         <BottomNavigation
           className={classes.root}
           value={value}
