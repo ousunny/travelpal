@@ -37,7 +37,8 @@ const Login = ({ setAlert, login, auth: { isAuthenticated, user } }) => {
     login({ username, password });
   };
 
-  if (isAuthenticated) return <Redirect to={`/profiles/${user._id}/trips`} />;
+  if (isAuthenticated && user)
+    return <Redirect to={`/profiles/${user._id}/trips`} />;
 
   return (
     <div className={classes.root}>

@@ -24,6 +24,7 @@ const Routes = () => {
           component={ProfileTrips}
         />
         <PrivateRoute exact path="/account" component={Account} />
+        <Route component={Login} />
       </Switch>
     </Container>
   );

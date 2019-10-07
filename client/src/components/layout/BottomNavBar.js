@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const BottomNavBar = ({ auth: { user, isAuthenticated } }) => {
+const BottomNavBar = ({ auth, auth: { user, isAuthenticated, loading } }) => {
   const classes = useStyles();
   const [value, setValue] = React.useState('trips');
 
@@ -29,7 +29,7 @@ const BottomNavBar = ({ auth: { user, isAuthenticated } }) => {
 
   return (
     <Fragment>
-      {isAuthenticated && (
+      {isAuthenticated && !loading && user && (
         <BottomNavigation
           className={classes.root}
           value={value}
