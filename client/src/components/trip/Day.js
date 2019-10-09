@@ -6,12 +6,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
   CardHeader,
-  CardContent,
   Paper,
   List,
   ListItem,
-  ListItemIcon,
-  ListItemText
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton
 } from '@material-ui/core';
 import { ThumbUp } from '@material-ui/icons';
 
@@ -24,9 +24,6 @@ const useStyles = makeStyles(theme => ({
   interested: {
     marginRight: theme.spacing(1),
     fontSize: '1.2rem'
-  },
-  icon: {
-    minWidth: '0'
   }
 }));
 
@@ -40,7 +37,7 @@ const Day = ({ day: { activities, date } }) => {
         <List>
           {activities.length > 0 &&
             activities.map(activity => (
-              <ListItem key={activity._id}>
+              <ListItem button key={activity._id}>
                 <ListItemText
                   primary={activity.title}
                   secondary={activity.description}
@@ -48,9 +45,11 @@ const Day = ({ day: { activities, date } }) => {
                 <div className={classes.interested}>
                   {activity.interested.length}
                 </div>
-                <ListItemIcon className={classes.icon}>
-                  <ThumbUp />
-                </ListItemIcon>
+                <ListItemSecondaryAction>
+                  <IconButton edge="end" aria-label="interested">
+                    <ThumbUp />
+                  </IconButton>
+                </ListItemSecondaryAction>
               </ListItem>
             ))}
         </List>
