@@ -516,16 +516,16 @@ router.patch('/:tripId/activities/:activityId', auth, async (req, res) => {
 
                   activity.interested = activity.interested.reduce(
                     (accumulator, user) => {
-                      user.toString() === interested
+                      user.toString() === req.user.id
                         ? (isFound = true)
-                        : accumulator.unshift(user);
+                        : accumulator.unshift(req.user.id);
 
                       return accumulator;
                     },
                     []
                   );
 
-                  !isFound && activity.interested.unshift(interested);
+                  !isFound && activity.interested.unshift(req.user.id);
                 }
               }
             });
