@@ -14,13 +14,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Day = ({ day: { activities, date } }) => {
+const Day = ({ tripId, day: { activities, date } }) => {
   const classes = useStyles();
 
   return (
     <Card className={classes.card}>
       <CardHeader title={<Moment format="YYYY/MM/DD">{date}</Moment>} />
-      <Activities activities={activities} />
+      <Activities tripId={tripId} activities={activities} />
     </Card>
   );
 };

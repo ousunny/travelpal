@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { TRIP_GET, TRIP_ERROR } from '../actions/types';
+import { TRIP_GET, TRIP_UPDATE, TRIP_ERROR } from '../actions/types';
 
 import { setAlert } from '../actions/alert';
 
@@ -10,6 +10,38 @@ export const getTripById = tripId => async dispatch => {
 
     dispatch({
       type: TRIP_GET,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: TRIP_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+export const interested = (tripId, date, activityId) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const body = JSON.stringify({
+      op: 'edit',
+      date,
+      interested: true
+    });
+
+    const res = await axios.patch(
+      `/api/trips/${tripId}/activities/${activityId}`,
+      body,
+      config
+    );
+
+    dispatch({
+      type: TRIP_UPDATE,
       payload: res.data
     });
   } catch (err) {

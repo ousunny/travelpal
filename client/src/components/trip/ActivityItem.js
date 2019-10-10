@@ -1,5 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
+import { interested } from '../../actions/trip';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -17,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ActivityItem = ({ activity }) => {
+const ActivityItem = ({ tripId, activity, interested }) => {
   const classes = useStyles();
 
   return (
@@ -25,7 +28,11 @@ const ActivityItem = ({ activity }) => {
       <ListItemText primary={activity.title} secondary={activity.description} />
       <div className={classes.interested}>{activity.interested.length}</div>
       <ListItemSecondaryAction>
-        <IconButton edge="end" aria-label="interested">
+        <IconButton
+          edge="end"
+          aria-label="interested"
+          onClick={() => interested(tripId, activity.date, activity._id)}
+        >
           <ThumbUp />
         </IconButton>
       </ListItemSecondaryAction>
@@ -34,7 +41,11 @@ const ActivityItem = ({ activity }) => {
 };
 
 ActivityItem.propTypes = {
-  activity: PropTypes.object.isRequired
+  activity: PropTypes.object.isRequired,
+  interested: PropTypes.func
 };
 
-export default ActivityItem;
+export default connect(
+  null,
+  { interested }
+)(ActivityItem);

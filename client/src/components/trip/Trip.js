@@ -48,7 +48,9 @@ const Trip = ({ getTripById, match, trip: { trip, loading, error } }) => {
           </h3>
           <h4>Destination: {trip.destination}</h4>
           {trip.itinerary.length > 0 ? (
-            trip.itinerary.map(day => <Day key={day._id} day={day} />)
+            trip.itinerary.map(day => (
+              <Day key={day._id} tripId={match.params.tripId} day={day} />
+            ))
           ) : (
             <h4>Add a start and end date</h4>
           )}
