@@ -486,7 +486,16 @@ router.patch('/:tripId/activities/:activityId', auth, async (req, res) => {
   try {
     let trip = await Trip.findById(req.params.tripId);
 
-    if (trip.user.toString() !== req.user.id)
+    // if (trip.user.toString() !== req.user.id)
+    //   return res.status(401).json({
+    //     msg: 'Not authorized'
+    //   });
+
+    let isMember = trip.members.some(member => {
+      return member.equals(req.user.id);
+    });
+
+    if (!isMember)
       return res.status(401).json({
         msg: 'Not authorized'
       });
@@ -512,20 +521,13 @@ router.patch('/:tripId/activities/:activityId', auth, async (req, res) => {
                 description && (activity.description = description);
 
                 if (interested) {
-                  let isFound = false;
+                  let userIndex = activity.interested.findIndex(user => {
+                    return user.toString() === req.user.id;
+                  });
 
-                  activity.interested = activity.interested.reduce(
-                    (accumulator, user) => {
-                      user.toString() === req.user.id
-                        ? (isFound = true)
-                        : accumulator.unshift(req.user.id);
-
-                      return accumulator;
-                    },
-                    []
-                  );
-
-                  !isFound && activity.interested.unshift(req.user.id);
+                  userIndex >= 0
+                    ? activity.interested.splice(userIndex, 1)
+                    : activity.interested.unshift(req.user.id);
                 }
               }
             });
