@@ -6,6 +6,7 @@ import {
   TRIP_ERROR,
   ACTIVITY_UPDATE,
   ACTIVITY_CREATE,
+  ACTIVITY_DELETE,
   ACTIVITY_ERROR
 } from '../actions/types';
 
@@ -88,6 +89,39 @@ export const createActivity = (tripId, formData) => async dispatch => {
     });
 
     dispatch(setAlert('Activity created!', 'success'));
+  } catch (err) {
+    dispatch({
+      type: ACTIVITY_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+export const deleteActivity = (tripId, date, activityId) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const body = JSON.stringify({
+      op: 'remove',
+      date
+    });
+
+    const res = await axios.patch(
+      `/api/trips/${tripId}/activities/${activityId}`,
+      body,
+      config
+    );
+
+    dispatch({
+      type: ACTIVITY_DELETE,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Activity deleted!', 'success'));
   } catch (err) {
     dispatch({
       type: ACTIVITY_ERROR,

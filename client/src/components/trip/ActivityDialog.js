@@ -2,8 +2,9 @@ import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { updateActivity } from '../../actions/trip';
+import { updateActivity, deleteActivity } from '../../actions/trip';
 
+import { makeStyles } from '@material-ui/core/styles';
 import {
   Dialog,
   DialogTitle,
@@ -12,21 +13,32 @@ import {
   DialogContentText,
   Slide,
   Button,
+  IconButton,
   TextField,
   Grid
 } from '@material-ui/core';
+import { Delete } from '@material-ui/icons';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const useStyles = makeStyles(() => ({
+  dialogTitle: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  }
+}));
+
 const ActivityDialog = ({
   tripId,
   activity,
   updateActivity,
+  deleteActivity,
   onClose,
   open
 }) => {
+  const classes = useStyles();
   const [edit, setEdit] = React.useState(false);
   const [formData, setFormData] = React.useState({
     title: '',
@@ -38,10 +50,14 @@ const ActivityDialog = ({
       title: activity.title ? activity.title : '',
       description: activity.description ? activity.description : ''
     });
-  }, []);
+  }, [activity.title, activity.description]);
 
   const toggleEdit = () => {
     setEdit(!edit);
+  };
+
+  const handleClickDelete = () => {
+    deleteActivity(tripId, activity.date, activity._id);
   };
 
   const onChange = e => {
@@ -69,7 +85,12 @@ const ActivityDialog = ({
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <DialogTitle name="title">{title}</DialogTitle>
+        <DialogTitle name="title" className={classes.dialogTitle}>
+          {title}
+          <IconButton onClick={handleClickDelete}>
+            <Delete />
+          </IconButton>
+        </DialogTitle>
         <DialogContent>
           <form id="activity-form" onSubmit={e => onSubmit(e)}>
             <Grid container spacing={3}>
@@ -123,10 +144,11 @@ const ActivityDialog = ({
 
 ActivityDialog.propTypes = {
   activity: PropTypes.object.isRequired,
-  updateActivity: PropTypes.func.isRequired
+  updateActivity: PropTypes.func.isRequired,
+  deleteActivity: PropTypes.func.isRequired
 };
 
 export default connect(
   null,
-  { updateActivity }
+  { updateActivity, deleteActivity }
 )(ActivityDialog);

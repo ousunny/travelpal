@@ -504,13 +504,21 @@ router.patch('/:tripId/activities/:activityId', auth, async (req, res) => {
 
     switch (req.body.op) {
       case 'remove':
-        trip.itinerary.map(day => {
-          if (moment(day.date, 'YYYY-MM-DD').isSame(date)) {
-            day.activities = day.activities.filter(activity => {
-              return activity._id.toString() !== req.params.activityId;
-            });
-          }
+        const day = trip.itinerary.find(day => {
+          return moment(day.date, 'YYYY-MM-DD').isSame(date);
         });
+        // .activities.filter(activity => {
+        //   return activity._id.toString() !== req.params.activityId;
+        // });
+
+        if (day) {
+          let activityIndex = day.activities.findIndex(activity => {
+            return activity._id.toString() === req.params.activityId;
+          });
+
+          activityIndex >= 0 && day.activities.splice(activityIndex, 1);
+        }
+
         break;
       case 'edit':
         const activity = trip.itinerary

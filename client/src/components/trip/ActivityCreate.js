@@ -21,12 +21,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const ActivityCreate = ({ tripId, date, createActivity, onClose, open }) => {
-  const [edit, setEdit] = React.useState(false);
-  const [formData, setFormData] = React.useState({
+  const cleanForm = {
     title: '',
-    date: '',
+    date,
     description: ''
-  });
+  };
+
+  const [edit, setEdit] = React.useState(false);
+  const [formData, setFormData] = React.useState(cleanForm);
 
   useEffect(() => {
     setFormData({
@@ -41,6 +43,7 @@ const ActivityCreate = ({ tripId, date, createActivity, onClose, open }) => {
   const onSubmit = e => {
     e.preventDefault();
     createActivity(tripId, formData);
+    setFormData(cleanForm);
     onClose();
   };
 
@@ -60,6 +63,7 @@ const ActivityCreate = ({ tripId, date, createActivity, onClose, open }) => {
               <TextField
                 label="Title"
                 name="title"
+                required
                 onChange={e => onChange(e)}
                 variant="outlined"
               />
