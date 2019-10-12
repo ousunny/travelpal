@@ -55,6 +55,8 @@ export const updateActivity = (
       type: ACTIVITY_UPDATE,
       payload: res.data
     });
+
+    dispatch(setAlert('Changes saved!', 'success'));
   } catch (err) {
     dispatch({
       type: ACTIVITY_ERROR,

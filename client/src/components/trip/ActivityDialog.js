@@ -51,6 +51,7 @@ const ActivityDialog = ({
   const onSubmit = e => {
     e.preventDefault();
     updateActivity(tripId, activity.date, activity._id, formData);
+    setEdit(false);
     onClose();
   };
 
