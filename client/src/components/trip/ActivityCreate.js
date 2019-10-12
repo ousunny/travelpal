@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import Moment from 'react-moment';
+
 import { createActivity } from '../../actions/trip';
 
 import {
@@ -59,7 +61,7 @@ const ActivityCreate = ({ tripId, date, createActivity, onClose, open }) => {
       <DialogContent>
         <form id="activity-form" onSubmit={e => onSubmit(e)}>
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid item xs={10}>
               <TextField
                 label="Title"
                 name="title"
@@ -67,6 +69,9 @@ const ActivityCreate = ({ tripId, date, createActivity, onClose, open }) => {
                 onChange={e => onChange(e)}
                 variant="outlined"
               />
+            </Grid>
+            <Grid item xs={2}>
+              <Moment format="YYYY/MM/DD">{date}</Moment>
             </Grid>
             <Grid item xs={12}>
               <TextField

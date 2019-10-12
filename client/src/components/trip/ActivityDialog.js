@@ -2,6 +2,8 @@ import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import Moment from 'react-moment';
+
 import { updateActivity, deleteActivity } from '../../actions/trip';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -94,7 +96,7 @@ const ActivityDialog = ({
         <DialogContent>
           <form id="activity-form" onSubmit={e => onSubmit(e)}>
             <Grid container spacing={3}>
-              <Grid item xs={12}>
+              <Grid item xs={10}>
                 <TextField
                   disabled={!edit}
                   label="Title"
@@ -103,6 +105,9 @@ const ActivityDialog = ({
                   onChange={e => onChange(e)}
                   variant="outlined"
                 />
+              </Grid>
+              <Grid item xs={2}>
+                <Moment format="YYYY/MM/DD">{activity.date}</Moment>
               </Grid>
               <Grid item xs={12}>
                 <TextField
