@@ -3,6 +3,7 @@ import {
   TRIP_UPDATE,
   TRIP_ERROR,
   ACTIVITY_UPDATE,
+  ACTIVITY_CREATE,
   ACTIVITY_ERROR
 } from '../actions/types';
 
@@ -19,6 +20,7 @@ export default function(state = initialState, action) {
     case TRIP_GET:
     case TRIP_UPDATE:
     case ACTIVITY_UPDATE:
+    case ACTIVITY_CREATE:
       return {
         ...state,
         trip: payload,

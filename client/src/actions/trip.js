@@ -5,6 +5,7 @@ import {
   TRIP_UPDATE,
   TRIP_ERROR,
   ACTIVITY_UPDATE,
+  ACTIVITY_CREATE,
   ACTIVITY_ERROR
 } from '../actions/types';
 
@@ -57,6 +58,36 @@ export const updateActivity = (
     });
 
     dispatch(setAlert('Changes saved!', 'success'));
+  } catch (err) {
+    dispatch({
+      type: ACTIVITY_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+export const createActivity = (tripId, formData) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const body = JSON.stringify(formData);
+
+    const res = await axios.post(
+      `/api/trips/${tripId}/activities`,
+      body,
+      config
+    );
+
+    dispatch({
+      type: ACTIVITY_CREATE,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Activity created!', 'success'));
   } catch (err) {
     dispatch({
       type: ACTIVITY_ERROR,
