@@ -513,26 +513,28 @@ router.patch('/:tripId/activities/:activityId', auth, async (req, res) => {
         });
         break;
       case 'edit':
-        trip.itinerary.map(day => {
-          if (moment(day.date, 'YYYY-MM-DD').isSame(date)) {
-            day.activities.map(activity => {
-              if (activity._id.toString() === req.params.activityId) {
-                title && (activity.title = title);
-                description && (activity.description = description);
+        const activity = trip.itinerary
+          .find(day => {
+            return moment(day.date, 'YYYY-MM-DD').isSame(date);
+          })
+          .activities.find(activity => {
+            return activity._id.toString() === req.params.activityId;
+          });
 
-                if (interested) {
-                  let userIndex = activity.interested.findIndex(user => {
-                    return user.toString() === req.user.id;
-                  });
+        if (activity) {
+          title && (activity.title = title);
+          description && (activity.description = description);
 
-                  userIndex >= 0
-                    ? activity.interested.splice(userIndex, 1)
-                    : activity.interested.unshift(req.user.id);
-                }
-              }
+          if (interested) {
+            let userIndex = activity.interested.findIndex(user => {
+              return user.toString() === req.user.id;
             });
+
+            userIndex >= 0
+              ? activity.interested.splice(userIndex, 1)
+              : activity.interested.unshift(req.user.id);
           }
-        });
+        }
         break;
       default:
         return res.status(400).json({
