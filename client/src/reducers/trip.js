@@ -1,4 +1,10 @@
-import { TRIP_GET, TRIP_UPDATE, TRIP_ERROR } from '../actions/types';
+import {
+  TRIP_GET,
+  TRIP_UPDATE,
+  TRIP_ERROR,
+  ACTIVITY_UPDATE,
+  ACTIVITY_ERROR
+} from '../actions/types';
 
 const initialState = {
   trip: null,
@@ -12,6 +18,7 @@ export default function(state = initialState, action) {
   switch (type) {
     case TRIP_GET:
     case TRIP_UPDATE:
+    case ACTIVITY_UPDATE:
       return {
         ...state,
         trip: payload,
@@ -19,6 +26,7 @@ export default function(state = initialState, action) {
         error: {}
       };
     case TRIP_ERROR:
+    case ACTIVITY_ERROR:
       return {
         ...state,
         loading: false,
