@@ -5,6 +5,7 @@ const moment = require('moment');
 
 const auth = require('../../middleware/auth');
 
+const User = require('../../models/User');
 const Trip = require('../../models/Trip');
 const Profile = require('../../models/Profile');
 const Activity = require('../../models/Activity');
@@ -235,8 +236,17 @@ router.patch('/:id/members', auth, async (req, res) => {
         msg: 'Not authorized'
       });
 
+    const user = await User.findOne(
+      {
+        username: req.body.username
+      },
+      { password: 0 }
+    );
+
+    if (!user) return res.status(404).json({ msg: 'Username does not exist' });
+
     let isMember = trip.members.some(member => {
-      return member.equals(req.body.member);
+      return member.equals(user._id);
     });
 
     switch (req.body.op) {
@@ -247,13 +257,13 @@ router.patch('/:id/members', auth, async (req, res) => {
           });
 
         // Add member to trip
-        trip.members.push(req.body.member);
+        trip.members.push(user._id);
         await trip.save();
 
         // Update profile of added user to include trip
         await Profile.updateOne(
           {
-            user: req.body.member
+            user: user._id
           },
           {
             $push: {
@@ -276,7 +286,7 @@ router.patch('/:id/members', auth, async (req, res) => {
           },
           {
             $pull: {
-              members: req.body.member
+              members: user._id
             }
           }
         );
@@ -284,7 +294,7 @@ router.patch('/:id/members', auth, async (req, res) => {
         // Remove trip from removed user's profile
         await Profile.updateOne(
           {
-            user: req.body.member
+            user: user._id
           },
           {
             $pull: {
