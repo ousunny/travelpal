@@ -6,16 +6,20 @@ import Moment from 'react-moment';
 
 import { getTripById } from '../../actions/trip';
 
+import TripAppBar from './TripAppBar';
 import Day from './Day';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
+  },
+  marginTop: {
+    marginTop: '100px'
   }
 }));
 
@@ -40,8 +44,8 @@ const Trip = ({ getTripById, match, trip: { trip, loading, error } }) => {
           <CircularProgress />
         </div>
       ) : (
-        <Fragment>
-          <h1>{trip.title}</h1>
+        <div className={classes.marginTop}>
+          <TripAppBar title={trip.title} />
           <h3>
             <Moment format="YYYY/MM/DD">{trip.date.start}</Moment> -{' '}
             <Moment format="YYYY/MM/DD">{trip.date.end}</Moment>
@@ -54,7 +58,7 @@ const Trip = ({ getTripById, match, trip: { trip, loading, error } }) => {
           ) : (
             <h4>Add a start and end date</h4>
           )}
-        </Fragment>
+        </div>
       )}
     </Fragment>
   );
