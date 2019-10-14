@@ -2,6 +2,8 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import TripInformation from './TripInformation';
+
 import { makeStyles } from '@material-ui/core/styles';
 import {
   AppBar,
@@ -26,10 +28,19 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const TripAppBar = ({ title, props }) => {
+const TripAppBar = ({ trip, trip: { title, information }, props }) => {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
+
+  const handleDialogClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setOpen(false);
+  };
 
   const handleMenuOpen = e => {
     setAnchorEl(e.currentTarget);
@@ -59,7 +70,7 @@ const TripAppBar = ({ title, props }) => {
           <Typography className={classes.title} variant="h6">
             {title}
           </Typography>
-          <IconButton className={classes.icon}>
+          <IconButton className={classes.icon} onClick={handleDialogClickOpen}>
             <InfoOutlined />
           </IconButton>
           <IconButton className={classes.icon} onClick={handleMenuOpen}>
@@ -67,6 +78,7 @@ const TripAppBar = ({ title, props }) => {
           </IconButton>
         </Toolbar>
       </AppBar>
+      <TripInformation open={open} onClose={handleDialogClose} trip={trip} />
       <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose}>
         <MenuItem id="members" onClick={handleMenuClick}>
           <p>Members</p>
@@ -80,7 +92,7 @@ const TripAppBar = ({ title, props }) => {
 };
 
 TripAppBar.propTypes = {
-  title: PropTypes.string.isRequired
+  trip: PropTypes.object.isRequired
 };
 
 export default TripAppBar;

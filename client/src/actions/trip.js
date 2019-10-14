@@ -67,6 +67,35 @@ export const updateActivity = (
   }
 };
 
+export const updateTrip = (tripId, formData) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const body = JSON.stringify({
+      op: 'edit',
+      ...formData
+    });
+
+    const res = await axios.patch(`/api/trips/${tripId}`, body, config);
+
+    dispatch({
+      type: TRIP_UPDATE,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Changes saved!', 'success'));
+  } catch (err) {
+    dispatch({
+      type: TRIP_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
 export const createActivity = (tripId, formData) => async dispatch => {
   try {
     const config = {

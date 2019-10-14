@@ -45,7 +45,7 @@ const Trip = ({ getTripById, match, trip: { trip, loading, error } }) => {
         </div>
       ) : (
         <div className={classes.marginTopBottom}>
-          <TripAppBar title={trip.title} />
+          <TripAppBar trip={trip} />
           <h3>
             <Moment format="YYYY/MM/DD">{trip.date.start}</Moment> -{' '}
             <Moment format="YYYY/MM/DD">{trip.date.end}</Moment>
