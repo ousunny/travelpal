@@ -103,7 +103,10 @@ router.post(
 // @access    Private
 router.get('/:id', auth, async (req, res) => {
   try {
-    const trip = await Trip.findById(req.params.id);
+    const trip = await Trip.findById(req.params.id).populate(
+      'members',
+      '-password'
+    );
 
     if (!trip)
       return res.status(404).json({
@@ -229,7 +232,10 @@ router.get('/:id/members', auth, async (req, res) => {
 // @access    Private
 router.patch('/:id/members', auth, async (req, res) => {
   try {
-    const trip = await Trip.findById(req.params.id);
+    const trip = await Trip.findById(req.params.id).populate(
+      'members',
+      '-password'
+    );
 
     if (trip.user.toString() !== req.user.id)
       return res.status(401).json({
@@ -257,7 +263,7 @@ router.patch('/:id/members', auth, async (req, res) => {
           });
 
         // Add member to trip
-        trip.members.push(user._id);
+        trip.members.push(user);
         await trip.save();
 
         // Update profile of added user to include trip
@@ -280,16 +286,14 @@ router.patch('/:id/members', auth, async (req, res) => {
           });
 
         // Remove member from trip
-        await Trip.updateOne(
-          {
-            _id: req.params.id
-          },
-          {
-            $pull: {
-              members: user._id
-            }
-          }
+        let memberIndex = trip.members.findIndex(
+          member => member.username === req.body.username
         );
+
+        if (memberIndex >= 0) {
+          trip.members.splice(memberIndex, 1);
+          trip.save();
+        }
 
         // Remove trip from removed user's profile
         await Profile.updateOne(
