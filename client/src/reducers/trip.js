@@ -5,7 +5,9 @@ import {
   ACTIVITY_UPDATE,
   ACTIVITY_CREATE,
   ACTIVITY_DELETE,
-  ACTIVITY_ERROR
+  ACTIVITY_ERROR,
+  MEMBER_ERROR,
+  CLEAR_TRIP
 } from '../actions/types';
 
 const initialState = {
@@ -31,10 +33,18 @@ export default function(state = initialState, action) {
       };
     case TRIP_ERROR:
     case ACTIVITY_ERROR:
+    case MEMBER_ERROR:
       return {
         ...state,
         loading: false,
         error: payload
+      };
+    case CLEAR_TRIP:
+      return {
+        ...state,
+        loading: false,
+        error: {},
+        trip: null
       };
     default:
       return state;

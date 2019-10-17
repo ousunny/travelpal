@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { PROFILE_CREATE, PROFILE_GET_TRIPS } from './types';
+import { PROFILE_CREATE, PROFILE_GET_TRIPS, CLEAR_TRIP } from './types';
 
 import { setAlert } from './alert';
 
@@ -38,6 +38,10 @@ export const getProfileTrips = userId => async dispatch => {
     dispatch({
       type: PROFILE_GET_TRIPS,
       payload: res.data.trips
+    });
+
+    dispatch({
+      type: CLEAR_TRIP
     });
   } catch (err) {}
 };

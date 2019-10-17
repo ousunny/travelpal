@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import TripInformation from './TripInformation';
+import TripMember from './TripMember';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -30,16 +31,25 @@ const useStyles = makeStyles(() => ({
 
 const TripAppBar = ({ trip, trip: { title, information }, props }) => {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [infoOpen, setInfoOpen] = React.useState(false);
+  const [membersOpen, setMembersOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
 
-  const handleDialogClickOpen = () => {
-    setOpen(true);
+  const handleInformationClickOpen = () => {
+    setInfoOpen(true);
   };
 
-  const handleDialogClose = () => {
-    setOpen(false);
+  const handleInformationClose = () => {
+    setInfoOpen(false);
+  };
+
+  const handleMembersClickOpen = () => {
+    setMembersOpen(true);
+  };
+
+  const handleMembersClose = () => {
+    setMembersOpen(false);
   };
 
   const handleMenuOpen = e => {
@@ -52,6 +62,17 @@ const TripAppBar = ({ trip, trip: { title, information }, props }) => {
 
   const handleMenuClick = e => {
     setAnchorEl(e.currentTarget);
+
+    switch (e.currentTarget.id) {
+      case 'members':
+        handleMembersClickOpen();
+        break;
+      case 'edit':
+        break;
+      default:
+        handleMenuClose();
+    }
+
     handleMenuClose();
   };
 
@@ -70,7 +91,10 @@ const TripAppBar = ({ trip, trip: { title, information }, props }) => {
           <Typography className={classes.title} variant="h6">
             {title}
           </Typography>
-          <IconButton className={classes.icon} onClick={handleDialogClickOpen}>
+          <IconButton
+            className={classes.icon}
+            onClick={handleInformationClickOpen}
+          >
             <InfoOutlined />
           </IconButton>
           <IconButton className={classes.icon} onClick={handleMenuOpen}>
@@ -78,7 +102,17 @@ const TripAppBar = ({ trip, trip: { title, information }, props }) => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <TripInformation open={open} onClose={handleDialogClose} trip={trip} />
+      <TripInformation
+        open={infoOpen}
+        onClose={handleInformationClose}
+        trip={trip}
+      />
+      <TripMember
+        open={membersOpen}
+        onClose={handleMembersClose}
+        tripId={trip._id}
+        members={trip.members}
+      />
       <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose}>
         <MenuItem id="members" onClick={handleMenuClick}>
           <p>Members</p>

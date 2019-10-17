@@ -7,7 +7,8 @@ import {
   ACTIVITY_UPDATE,
   ACTIVITY_CREATE,
   ACTIVITY_DELETE,
-  ACTIVITY_ERROR
+  ACTIVITY_ERROR,
+  MEMBER_ERROR
 } from '../actions/types';
 
 import { setAlert } from '../actions/alert';
@@ -188,5 +189,36 @@ export const interested = (tripId, date, activityId) => async dispatch => {
       type: TRIP_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
     });
+  }
+};
+
+export const updateMembers = (tripId, op, username) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const body = JSON.stringify({
+      op,
+      username
+    });
+
+    const res = await axios.patch(`/api/trips/${tripId}/members`, body, config);
+
+    dispatch({
+      type: TRIP_UPDATE,
+      payload: res.data
+    });
+
+    dispatch(setAlert('Members updated!', 'success'));
+  } catch (err) {
+    dispatch({
+      type: MEMBER_ERROR,
+      payload: { msg: err.response.data.msg, status: err.response.status }
+    });
+
+    dispatch(setAlert(err.response.data.msg, 'error'));
   }
 };

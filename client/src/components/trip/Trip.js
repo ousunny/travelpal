@@ -23,19 +23,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Trip = ({ getTripById, match, trip: { trip, loading, error } }) => {
+const Trip = ({ auth, getTripById, match, trip: { trip, loading, error } }) => {
   const classes = useStyles();
 
   useEffect(() => {
     getTripById(match.params.tripId);
   }, [getTripById, match.params.tripId]);
 
-  if (error.msg)
-    return (
-      <Fragment>
-        {error.status} - {error.msg}
-      </Fragment>
-    );
+  if (!loading && !trip && error.status) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <Fragment>
@@ -70,7 +67,8 @@ Trip.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  trip: state.trip
+  trip: state.trip,
+  auth: state.auth
 });
 
 export default connect(
