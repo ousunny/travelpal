@@ -106,6 +106,8 @@ export const deleteTrip = tripId => async dispatch => {
       type: TRIP_DELETE,
       payload: res.data
     });
+
+    dispatch(setAlert('Trip deleted!', 'success'));
   } catch (err) {
     dispatch({
       type: TRIP_ERROR,

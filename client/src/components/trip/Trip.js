@@ -30,7 +30,7 @@ const Trip = ({ auth, getTripById, match, trip: { trip, loading, error } }) => {
     getTripById(match.params.tripId);
   }, [getTripById, match.params.tripId]);
 
-  if (!loading && !trip && error.status) {
+  if (!loading && !trip && error.msg) {
     return <Redirect to="/" />;
   }
 

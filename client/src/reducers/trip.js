@@ -2,6 +2,7 @@ import {
   TRIP_GET,
   TRIP_UPDATE,
   TRIP_ERROR,
+  TRIP_DELETE,
   ACTIVITY_UPDATE,
   ACTIVITY_CREATE,
   ACTIVITY_DELETE,
@@ -37,6 +38,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: false,
+        error: payload
+      };
+    case TRIP_DELETE:
+      return {
+        ...state,
+        loading: false,
+        trip: null,
         error: payload
       };
     case CLEAR_TRIP:
