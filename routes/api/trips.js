@@ -440,7 +440,10 @@ router.post(
           errors: errors.array()
         });
 
-      let trip = await Trip.findById(req.params.id);
+      let trip = await Trip.findById(req.params.id).populate(
+        'members',
+        '-password'
+      );
 
       if (!trip)
         return res.status(404).json({
