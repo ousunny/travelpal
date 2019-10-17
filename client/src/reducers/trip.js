@@ -1,4 +1,5 @@
 import {
+  TRIP_CREATE,
   TRIP_GET,
   TRIP_UPDATE,
   TRIP_ERROR,
@@ -21,6 +22,7 @@ export default function(state = initialState, action) {
   const { type, payload } = action;
 
   switch (type) {
+    case TRIP_CREATE:
     case TRIP_GET:
     case TRIP_UPDATE:
     case ACTIVITY_UPDATE:

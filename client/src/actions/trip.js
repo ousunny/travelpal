@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import {
+  TRIP_CREATE,
   TRIP_GET,
   TRIP_UPDATE,
   TRIP_ERROR,
@@ -22,6 +23,34 @@ export const getTripById = tripId => async dispatch => {
       type: TRIP_GET,
       payload: res.data
     });
+  } catch (err) {
+    dispatch({
+      type: TRIP_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+export const createTrip = (formData, history) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    const body = JSON.stringify(formData);
+
+    const res = await axios.post(`/api/trips`, body, config);
+
+    dispatch({
+      type: TRIP_CREATE,
+      payload: res.data
+    });
+
+    history.push('/');
+
+    dispatch(setAlert('Trip created!', 'success'));
   } catch (err) {
     dispatch({
       type: TRIP_ERROR,
