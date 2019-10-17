@@ -4,6 +4,7 @@ import {
   TRIP_GET,
   TRIP_UPDATE,
   TRIP_ERROR,
+  TRIP_DELETE,
   ACTIVITY_UPDATE,
   ACTIVITY_CREATE,
   ACTIVITY_DELETE,
@@ -93,6 +94,22 @@ export const updateTrip = (tripId, formData) => async dispatch => {
     dispatch({
       type: TRIP_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
+export const deleteTrip = tripId => async dispatch => {
+  try {
+    const res = await axios.delete(`/api/trips/${tripId}`);
+
+    dispatch({
+      type: TRIP_DELETE,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: TRIP_ERROR,
+      payload: { msg: err.response.data.msg, status: err.response.status }
     });
   }
 };

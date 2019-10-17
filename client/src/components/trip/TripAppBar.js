@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import TripInformation from './TripInformation';
 import TripMember from './TripMember';
+import TripEdit from './TripEdit';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -33,6 +34,7 @@ const TripAppBar = ({ trip, trip: { title, information }, props }) => {
   const classes = useStyles();
   const [infoOpen, setInfoOpen] = React.useState(false);
   const [membersOpen, setMembersOpen] = React.useState(false);
+  const [editOpen, setEditOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
 
@@ -52,6 +54,14 @@ const TripAppBar = ({ trip, trip: { title, information }, props }) => {
     setMembersOpen(false);
   };
 
+  const handleEditClickOpen = () => {
+    setEditOpen(true);
+  };
+
+  const handleEditClose = () => {
+    setEditOpen(false);
+  };
+
   const handleMenuOpen = e => {
     setAnchorEl(e.currentTarget);
   };
@@ -68,6 +78,7 @@ const TripAppBar = ({ trip, trip: { title, information }, props }) => {
         handleMembersClickOpen();
         break;
       case 'edit':
+        handleEditClickOpen();
         break;
       default:
         handleMenuClose();
@@ -111,6 +122,12 @@ const TripAppBar = ({ trip, trip: { title, information }, props }) => {
         open={membersOpen}
         onClose={handleMembersClose}
         tripId={trip._id}
+        members={trip.members}
+      />
+      <TripEdit
+        open={editOpen}
+        onClose={handleEditClose}
+        trip={trip}
         members={trip.members}
       />
       <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={handleMenuClose}>

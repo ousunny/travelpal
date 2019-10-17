@@ -12,6 +12,7 @@ export const PROFILE_GET_TRIPS = 'PROFILE_GET_TRIPS';
 export const TRIP_GET = 'TRIP_GET';
 export const TRIP_UPDATE = 'TRIP_UPDATE';
 export const TRIP_ERROR = 'TRIP_ERROR';
+export const TRIP_DELETE = 'TRIP_DELETE';
 export const ACTIVITY_UPDATE = 'ACTIVITY_UPDATE';
 export const ACTIVITY_CREATE = 'ACTIVITY_CREATE';
 export const ACTIVITY_DELETE = 'ACTIVITY_DELETE';

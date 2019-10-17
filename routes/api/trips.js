@@ -139,7 +139,10 @@ router.get('/:id', auth, async (req, res) => {
 // @access    Private
 router.patch('/:id', auth, async (req, res) => {
   try {
-    const trip = await Trip.findById(req.params.id);
+    const trip = await Trip.findById(req.params.id).populate(
+      'members',
+      '-password'
+    );
 
     if (!trip)
       return res.status(404).json({
@@ -155,13 +158,13 @@ router.patch('/:id', auth, async (req, res) => {
         msg: 'Not authorized'
       });
 
-    const { title, description, information } = req.body;
+    const { title, description, destination } = req.body;
 
     switch (req.body.op) {
       case 'edit':
         title && (trip.title = title);
         description && (trip.description = description);
-        information && (trip.information = information);
+        destination && (trip.destination = destination);
 
         await trip.save();
         break;
