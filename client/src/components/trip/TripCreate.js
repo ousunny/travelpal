@@ -89,6 +89,7 @@ const TripCreate = ({ createTrip, history, onClose, open }) => {
                 onDatesChange={handleOnDaysChange}
                 focusedInput={focusedInput}
                 onFocusChange={focusedInput => setFocusedInput(focusedInput)}
+                required
               />
             </Grid>
             <Grid item xs={12}>
