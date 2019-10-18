@@ -57,11 +57,14 @@ const ActivityCreate = ({ tripId, date, createActivity, onClose, open }) => {
 
   return (
     <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}>
-      <DialogTitle>Create Activity</DialogTitle>
+      <DialogTitle>
+        <p>Create Activity</p>
+        <Moment format="YYYY/MM/DD">{date}</Moment>
+      </DialogTitle>
       <DialogContent>
         <form id="activity-form" onSubmit={e => onSubmit(e)}>
           <Grid container spacing={3}>
-            <Grid item xs={10}>
+            <Grid item xs={12}>
               <TextField
                 label="Title"
                 name="title"
@@ -69,9 +72,6 @@ const ActivityCreate = ({ tripId, date, createActivity, onClose, open }) => {
                 onChange={e => onChange(e)}
                 variant="outlined"
               />
-            </Grid>
-            <Grid item xs={2}>
-              <Moment format="YYYY/MM/DD">{date}</Moment>
             </Grid>
             <Grid item xs={12}>
               <TextField

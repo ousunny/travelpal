@@ -79,7 +79,6 @@ const TripCreate = ({ createTrip, history, onClose, open }) => {
                 variant="outlined"
               />
             </Grid>
-
             <Grid item xs={12}>
               <DateRangePicker
                 startDate={date.start}
