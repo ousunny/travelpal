@@ -504,7 +504,10 @@ router.post(
 // @access    Private
 router.patch('/:tripId/activities/:activityId', auth, async (req, res) => {
   try {
-    let trip = await Trip.findById(req.params.tripId);
+    let trip = await Trip.findById(req.params.tripId).populate(
+      'members',
+      '-password'
+    );
 
     // if (trip.user.toString() !== req.user.id)
     //   return res.status(401).json({

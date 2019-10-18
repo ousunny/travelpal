@@ -108,7 +108,13 @@ router.get('/:id/trips', auth, async (req, res) => {
       {
         savedActivities: 0
       }
-    ).populate('trips');
+    ).populate({
+      path: 'trips',
+      populate: {
+        path: 'members',
+        select: '-password'
+      }
+    });
 
     if (!profile)
       return res.status(404).json({
