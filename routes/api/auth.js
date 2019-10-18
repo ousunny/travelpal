@@ -5,6 +5,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 
+const jwtSecret = process.env.jwtSecret || config.get('jwtSecret');
+
 const auth = require('../../middleware/auth');
 
 const User = require('../../models/User');
@@ -74,7 +76,7 @@ router.post(
 
       jwt.sign(
         payload,
-        config.get('jwtSecret'),
+        jwtSecret,
         {
           expiresIn: 360000
         },
