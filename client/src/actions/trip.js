@@ -39,6 +39,16 @@ export const createTrip = (formData, history) => async dispatch => {
       }
     };
 
+    const { date } = formData;
+
+    formData = {
+      ...formData,
+      date: {
+        start: date.start.format('YYYY/MM/DD'),
+        end: date.end.format('YYYY/MM/DD')
+      }
+    };
+
     const body = JSON.stringify(formData);
 
     const res = await axios.post(`/api/trips`, body, config);
