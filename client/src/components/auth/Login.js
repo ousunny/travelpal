@@ -7,12 +7,29 @@ import { setAlert } from '../../actions/alert';
 import { login } from '../../actions/auth';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, TextField, Button } from '@material-ui/core';
+import { Paper, Typography, Grid, TextField, Button } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: '500px',
-    margin: '0 auto'
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    maxWidth: '500px'
+  },
+  heading: {
+    padding: '2rem',
+    width: '100%',
+    textAlign: 'center',
+    color: '#fff',
+    background: 'linear-gradient(225deg, #397dcf 0%, #428cd7 20%, #7bd1e3 100%)'
+  },
+  form: {
+    padding: '1rem'
+  },
+  fields: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
   }
 }));
 
@@ -42,9 +59,11 @@ const Login = ({ setAlert, login, auth: { isAuthenticated, user } }) => {
 
   return (
     <div className={classes.root}>
-      <h1>Login</h1>
-      <form onSubmit={e => onSubmit(e)}>
-        <Grid container justify="center" alignItems="center" spacing={2}>
+      <div className={classes.heading}>
+        <Typography variant="h2">Login</Typography>
+      </div>
+      <form className={classes.form} onSubmit={e => onSubmit(e)}>
+        <Grid container className={classes.fields} spacing={3}>
           <Grid item xs={12}>
             <TextField
               required
@@ -67,9 +86,6 @@ const Login = ({ setAlert, login, auth: { isAuthenticated, user } }) => {
             />
           </Grid>
           <Grid item xs={6}>
-            <Button component={CollisionLink}>Register</Button>
-          </Grid>
-          <Grid item xs={6}>
             <Button
               variant="contained"
               size="large"
@@ -78,6 +94,9 @@ const Login = ({ setAlert, login, auth: { isAuthenticated, user } }) => {
             >
               Login
             </Button>
+          </Grid>
+          <Grid item xs={6}>
+            <Button component={CollisionLink}>Register</Button>
           </Grid>
         </Grid>
       </form>

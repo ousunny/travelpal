@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { Container } from '@material-ui/core';
@@ -13,7 +13,7 @@ import Account from '../layout/Account';
 
 const Routes = () => {
   return (
-    <Container>
+    <Fragment>
       <Alert />
       <Switch>
         <Route exact path="/login" component={Login} />
@@ -27,7 +27,7 @@ const Routes = () => {
         <PrivateRoute exact path="/account" component={Account} />
         <Route component={Login} />
       </Switch>
-    </Container>
+    </Fragment>
   );
 };
 
