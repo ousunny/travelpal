@@ -17,6 +17,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
+  },
+  list: {
+    paddingBottom: '5rem'
   }
 }));
 
@@ -38,7 +41,7 @@ const Trip = ({ auth, getTripById, match, trip: { trip, loading, error } }) => {
           <CircularProgress />
         </div>
       ) : (
-        <div>
+        <div className={classes.list}>
           <TripAppBar trip={trip} />
           <h3>
             <Moment format="YYYY/MM/DD">{trip.date.start}</Moment> -{' '}
