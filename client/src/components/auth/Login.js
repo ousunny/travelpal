@@ -11,6 +11,7 @@ import { Paper, Typography, Grid, TextField, Button } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
+    margin: '0 auto',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -30,6 +31,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
+  },
+  buttonFullWidth: {
+    width: '100%'
   }
 }));
 
@@ -85,12 +89,13 @@ const Login = ({ setAlert, login, auth: { isAuthenticated, user } }) => {
               type="password"
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} className={classes.buttonFullWidth}>
             <Button
               variant="contained"
               size="large"
               color="primary"
               type="submit"
+              className={classes.buttonFullWidth}
             >
               Login
             </Button>
