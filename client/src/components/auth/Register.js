@@ -7,12 +7,38 @@ import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, TextField, Button } from '@material-ui/core';
+import { Paper, Typography, Grid, TextField, Button } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: '500px',
-    margin: '0 auto'
+    maxWidth: '550px',
+    margin: '0 auto 5rem auto',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  heading: {
+    padding: '2rem',
+    width: '100%',
+    textAlign: 'center',
+    color: '#fff',
+    background: 'linear-gradient(225deg, #397dcf 0%, #428cd7 20%, #7bd1e3 100%)'
+  },
+  form: {
+    padding: '1rem'
+  },
+  fields: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap'
+  },
+  buttonFullWidth: {
+    width: '100%'
+  },
+  center: {
+    margin: '0 auto',
+    textAlign: 'center'
   }
 }));
 
@@ -52,10 +78,12 @@ const Register = ({
     return <Redirect to={`/profiles/${user._id}/trips`} />;
 
   return (
-    <div className={classes.root}>
-      <h1>Register</h1>
-      <form onSubmit={e => onSubmit(e)}>
-        <Grid container justify="center" alignItems="center" spacing={2}>
+    <Paper className={classes.root}>
+      <div className={classes.heading}>
+        <Typography variant="h2">Register</Typography>
+      </div>
+      <form className={classes.form} onSubmit={e => onSubmit(e)}>
+        <Grid container className={classes.fields} spacing={3}>
           <Grid item xs={12} sm={6}>
             <TextField
               required
@@ -108,22 +136,23 @@ const Register = ({
               type="password"
             />
           </Grid>
-          <Grid item xs={6}>
-            <Button component={CollisionLink}>Login</Button>
-          </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={12} className={classes.buttonFullWidth}>
             <Button
               variant="contained"
               size="large"
               color="primary"
               type="submit"
+              className={classes.buttonFullWidth}
             >
               Register
             </Button>
           </Grid>
+          <Grid item xs={6} className={classes.center}>
+            <Button component={CollisionLink}>Login</Button>
+          </Grid>
         </Grid>
       </form>
-    </div>
+    </Paper>
   );
 };
 
