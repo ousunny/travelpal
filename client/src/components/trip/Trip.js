@@ -17,9 +17,6 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center'
-  },
-  marginTopBottom: {
-    margin: '100px 0'
   }
 }));
 
@@ -41,7 +38,7 @@ const Trip = ({ auth, getTripById, match, trip: { trip, loading, error } }) => {
           <CircularProgress />
         </div>
       ) : (
-        <div className={classes.marginTopBottom}>
+        <div>
           <TripAppBar trip={trip} />
           <h3>
             <Moment format="YYYY/MM/DD">{trip.date.start}</Moment> -{' '}

@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    maxWidth: '500px'
+    maxWidth: '550px'
   },
   heading: {
     padding: '2rem',
@@ -58,7 +58,7 @@ const Login = ({ setAlert, login, auth: { isAuthenticated, user } }) => {
     return <Redirect to={`/profiles/${user._id}/trips`} />;
 
   return (
-    <div className={classes.root}>
+    <Paper className={classes.root}>
       <div className={classes.heading}>
         <Typography variant="h2">Login</Typography>
       </div>
@@ -100,7 +100,7 @@ const Login = ({ setAlert, login, auth: { isAuthenticated, user } }) => {
           </Grid>
         </Grid>
       </form>
-    </div>
+    </Paper>
   );
 };
 

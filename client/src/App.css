@@ -6,6 +6,17 @@
   box-sizing: border-box;
 }
 
+body {
+  padding: 5rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#root {
+  width: 100%;
+}
+
 .DateRangePicker_picker {
   z-index: 10;
 }
