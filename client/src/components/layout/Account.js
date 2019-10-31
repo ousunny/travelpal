@@ -5,12 +5,16 @@ import PropTypes from 'prop-types';
 
 import { logout } from '../../actions/auth';
 
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Button, AppBar, Toolbar, Typography } from '@material-ui/core';
 
 const Account = ({ logout }) => {
   return (
     <Fragment>
-      <h1>Account</h1>
+      <AppBar position="fixed">
+        <Toolbar>
+          <Typography variant="h6">Account</Typography>
+        </Toolbar>
+      </AppBar>
       <Grid container>
         <Grid item xs={12}>
           <Button onClick={logout} to="/" component={Link}>
