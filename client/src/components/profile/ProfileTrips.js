@@ -8,7 +8,13 @@ import TripCreate from '../trip/TripCreate';
 import { getProfileTrips } from '../../actions/profile';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { CircularProgress, IconButton } from '@material-ui/core';
+import {
+  CircularProgress,
+  IconButton,
+  AppBar,
+  Toolbar,
+  Typography
+} from '@material-ui/core';
 import { AddCircle } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
@@ -17,8 +23,11 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center'
   },
+  list: {
+    paddingBottom: '5rem'
+  },
   icon: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: theme.spacing(8),
     right: theme.spacing(2)
   },
@@ -55,8 +64,12 @@ const ProfileTrips = ({
           <CircularProgress />
         </div>
       ) : (
-        <Fragment>
-          <h2>Trips</h2>
+        <div className={classes.list}>
+          <AppBar position="fixed">
+            <Toolbar>
+              <Typography variant="h6">Trips</Typography>
+            </Toolbar>
+          </AppBar>
           {trips.length > 0 ? (
             trips.map(trip => <ProfileTripItem key={trip._id} trip={trip} />)
           ) : (
@@ -65,7 +78,7 @@ const ProfileTrips = ({
           <IconButton className={classes.icon} onClick={handleClickOpen}>
             <AddCircle className={classes.addIcon} color="primary" />
           </IconButton>
-        </Fragment>
+        </div>
       )}
       <TripCreate open={open} onClose={handleClose} />
     </Fragment>
