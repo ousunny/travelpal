@@ -8,7 +8,8 @@ import {
   Card,
   CardHeader,
   CardContent,
-  CardActionArea
+  CardActionArea,
+  Typography
 } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -31,14 +32,19 @@ const ProfileTrip = ({
             <Fragment>
               <Moment format="YYYY-MM-DD">{date.start}</Moment> -{' '}
               <Moment format="YYYY-MM-DD">{date.end}</Moment>
-              <div>{destination}</div>
-              <div>{members.length} members currently going</div>
+              <div>Destination: {destination}</div>
+              <div>
+                {members.length} member{members.length > 1 && <span>s</span>}{' '}
+                currently going
+              </div>
             </Fragment>
           }
         />
-        <CardContent>
-          <p>{description}</p>
-        </CardContent>
+        {description.length !== 0 && (
+          <CardContent>
+            <Typography variant="body2">{description}</Typography>
+          </CardContent>
+        )}
       </CardActionArea>
     </Card>
   );
