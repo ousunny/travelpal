@@ -15,7 +15,8 @@ import {
   Slide,
   Button,
   TextField,
-  Grid
+  Grid,
+  Typography
 } from '@material-ui/core';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -57,11 +58,11 @@ const ActivityCreate = ({ tripId, date, createActivity, onClose, open }) => {
 
   return (
     <Dialog open={open} onClose={handleClose} TransitionComponent={Transition}>
-      <DialogTitle>
-        <p>Create Activity</p>
-        <Moment format="YYYY/MM/DD">{date}</Moment>
-      </DialogTitle>
+      <DialogTitle>Create Activity</DialogTitle>
       <DialogContent>
+        <Typography variant="subtitle2" gutterBottom>
+          <Moment format="YYYY/MM/DD">{date}</Moment>
+        </Typography>
         <form id="activity-form" onSubmit={e => onSubmit(e)}>
           <Grid container spacing={3}>
             <Grid item xs={12}>
