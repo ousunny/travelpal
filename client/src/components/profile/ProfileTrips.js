@@ -33,7 +33,9 @@ const useStyles = makeStyles(theme => ({
   },
   addIcon: {
     height: '4rem',
-    width: '4rem'
+    width: '4rem',
+    backgroundColor: '#fff',
+    borderRadius: '50%'
   }
 }));
 
