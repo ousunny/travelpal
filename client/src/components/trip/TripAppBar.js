@@ -118,12 +118,7 @@ const TripAppBar = ({ trip, trip: { title, information }, props }) => {
         onClose={handleInformationClose}
         trip={trip}
       />
-      <TripMember
-        open={membersOpen}
-        onClose={handleMembersClose}
-        tripId={trip._id}
-        members={trip.members}
-      />
+      <TripMember open={membersOpen} onClose={handleMembersClose} trip={trip} />
       <TripEdit
         open={editOpen}
         onClose={handleEditClose}

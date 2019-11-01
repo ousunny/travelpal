@@ -26,7 +26,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const TripMember = ({ tripId, members, updateMembers, onClose, open }) => {
+const TripMember = ({
+  auth,
+  trip: { _id: tripId, user, members },
+  updateMembers,
+  onClose,
+  open
+}) => {
   const [formData, setFormData] = React.useState({
     username: ''
   });
@@ -49,6 +55,7 @@ const TripMember = ({ tripId, members, updateMembers, onClose, open }) => {
   };
 
   const { username } = formData;
+  const { _id: userId } = auth.user;
 
   return (
     <Fragment>
@@ -76,9 +83,17 @@ const TripMember = ({ tripId, members, updateMembers, onClose, open }) => {
             {members.map(member => (
               <ListItem key={member._id}>
                 <ListItemText primary={member.username} />
-                <IconButton value={member.username} onClick={handleRemoveClick}>
-                  <RemoveCircleOutlineOutlined />
-                </IconButton>
+                <Fragment>
+                  {(userId.toString() === user.toString() ||
+                    userId.toString() === member._id) && (
+                    <IconButton
+                      value={member.username}
+                      onClick={handleRemoveClick}
+                    >
+                      <RemoveCircleOutlineOutlined />
+                    </IconButton>
+                  )}
+                </Fragment>
               </ListItem>
             ))}
           </List>
@@ -92,12 +107,16 @@ const TripMember = ({ tripId, members, updateMembers, onClose, open }) => {
 };
 
 TripMember.propTypes = {
-  tripId: PropTypes.string.isRequired,
-  members: PropTypes.array.isRequired,
-  updateMembers: PropTypes.func.isRequired
+  trip: PropTypes.object.isRequired,
+  updateMembers: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
 };
 
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
 export default connect(
-  null,
+  mapStateToProps,
   { updateMembers }
 )(TripMember);
