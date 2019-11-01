@@ -240,7 +240,11 @@ router.patch('/:id/members', auth, async (req, res) => {
       '-password'
     );
 
-    if (trip.user.toString() !== req.user.id)
+    let isMember = trip.members.some(member => {
+      return member.equals(req.user.id);
+    });
+
+    if (!isMember)
       return res.status(401).json({
         msg: 'Not authorized'
       });
@@ -254,7 +258,7 @@ router.patch('/:id/members', auth, async (req, res) => {
 
     if (!user) return res.status(404).json({ msg: 'Username does not exist' });
 
-    let isMember = trip.members.some(member => {
+    isMember = trip.members.some(member => {
       return member.equals(user._id);
     });
 
@@ -283,6 +287,16 @@ router.patch('/:id/members', auth, async (req, res) => {
 
         break;
       case 'remove':
+        if (trip.members.length <= 1)
+          return res.status(400).json({
+            msg: 'You are the only member, you cannot remove yourself'
+          });
+
+        if (req.user.id === trip.user.toString())
+          return res.status(400).json({
+            msg: 'You are the creator of the trip, you cannot remove yourself'
+          });
+
         if (!isMember)
           return res.status(404).json({
             msg: 'Member not found'

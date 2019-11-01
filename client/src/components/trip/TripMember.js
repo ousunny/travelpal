@@ -26,16 +26,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const TripMember = ({
-  auth,
-  trip: { _id: tripId, user, members },
-  updateMembers,
-  onClose,
-  open
-}) => {
+const TripMember = ({ auth, trip, updateMembers, onClose, open }) => {
   const [formData, setFormData] = React.useState({
     username: ''
   });
+
+  const { _id: tripId, user, members } = trip;
 
   const handleRemoveClick = e => {
     updateMembers(tripId, 'remove', e.currentTarget.value);
