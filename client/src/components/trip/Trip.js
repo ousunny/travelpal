@@ -43,11 +43,13 @@ const Trip = ({ auth, getTripById, match, trip: { trip, loading, error } }) => {
       ) : (
         <div className={classes.list}>
           <TripAppBar trip={trip} />
-          <h3>
+          <Typography variant="h5">
             <Moment format="YYYY/MM/DD">{trip.date.start}</Moment> -{' '}
             <Moment format="YYYY/MM/DD">{trip.date.end}</Moment>
-          </h3>
-          <h4>Destination: {trip.destination}</h4>
+          </Typography>
+          <Typography variant="subtitle1" gutterBottom>
+            Destination: {trip.destination}
+          </Typography>
           {trip.itinerary.length > 0 ? (
             trip.itinerary.map(day => (
               <Day key={day._id} tripId={match.params.tripId} day={day} />
